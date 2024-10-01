@@ -15,24 +15,23 @@ conn = mysql.connector.connect(
 
 # FUNCTIONS
 
-# (en tiiä tarvitaanko me latitude_deg, longitude_deg?) - Donya
-
 # random 3 airports 
 def get_airports():
-    sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg
-        FROM airport
-        WHERE continent = 'EU' 
-        AND type='large_airport'
-        ORDER by RAND()
-        LIMIT 3;"""
-    cursor = conn.cursor(dictionary=True)
+    sql = (f"SELECT iso_country, ident, name, type, latitude_deg, longitude_deg"
+        "FROM airport"
+        "WHERE continent = 'EU'" 
+        "AND type='large_airport'"
+        "ORDER by RAND()"
+        "LIMIT 3;")
+    cursor = connection.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
-# starting airport
+# starting airport 
+# ident ja type ei tarvita, otin ne pois for now(?)
 def get_airports_start():
-    sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg
+    sql = """SELECT iso_country, name, latitude_deg, longitude_deg
         FROM airport
         WHERE ident = 'EFHK'"""
     cursor = conn.cursor(dictionary=True)
