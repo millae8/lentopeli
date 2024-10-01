@@ -15,7 +15,9 @@ conn = mysql.connector.connect(
 
 # FUNCTIONS
 
-# random 3 airports
+# (en tiiä tarvitaanko me latitude_deg, longitude_deg?) - Donya
+
+# random 3 airports 
 def get_airports():
     sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg
         FROM airport
