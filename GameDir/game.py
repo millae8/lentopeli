@@ -1,5 +1,4 @@
 from geopy import distance
-
 import mysql.connector
 
 conn = mysql.connector.connect(
@@ -17,21 +16,22 @@ conn = mysql.connector.connect(
 
 # random 3 airports 
 def get_airports():
-    sql = (f"SELECT iso_country, ident, name, type, latitude_deg, longitude_deg"
-        "FROM airport"
-        "WHERE continent = 'EU'" 
-        "AND type='large_airport'"
-        "ORDER by RAND()"
-        "LIMIT 3;")
-    cursor = connection.cursor(dictionary=True)
+    sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg
+        FROM airport
+        WHERE continent = 'EU' 
+        AND type='large_airport'
+        ORDER by RAND()
+        LIMIT 3;"""
+    cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
 
 # starting airport 
 # ident ja type ei tarvita, otin ne pois for now(?)
+# ident tarvitaan koska se käyttää sitä löytääkseen oikeen lentokentän: where ident = efhk
 def get_airports_start():
-    sql = """SELECT iso_country, name, latitude_deg, longitude_deg
+    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
         FROM airport
         WHERE ident = 'EFHK'"""
     cursor = conn.cursor(dictionary=True)
@@ -71,18 +71,25 @@ def update_location(icao, p_range, g_id):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql, (icao, p_range, g_id))
 
+# get a question
+"""
+def get_question():
+    sql = en muista mitä ope sano :c
+"""
+
 # game starts
 
 # GAME SETTINGS
 
-print('When you are ready to start, ')
-player = input('type player name: ')
+print('Kun olet valmis aloittamaan, ')
+player = input('kirjoita pelaajan nimi: ')
 # boolean for game over and win
 game_over = False
 win = False
 
 player_range = 5000 # start range in km = 5000
-score = 0
+#max_stamp = 3
+#stamp = 0
 all_airports = get_airports_start()
 start_airport = all_airports[0]['ident']
 current_airport = start_airport
@@ -94,10 +101,10 @@ while not game_over:
     # get current airport info
     airport = get_airport_info(current_airport)
     # show game status
-    print(f'''You are at {airport['name']}.''')
-    print(f'''You have {player_range:.0f}km of range.''')
+    print(f'''Olet kohteessa {airport['name']}.''')
+    print(f'''Sinulla on {player_range:.0f}km of range.''')
     # pause
-    input('\033[32mPress Enter to continue...\033[0m')
+    input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
     # if no range, game over
     # show airports in range. if none, game over
@@ -112,11 +119,11 @@ while not game_over:
             ap_distance = calculate_distance(current_airport, airport['ident'])
             print(f'''{airport['name']}, icao: {airport['ident']}, distance: {ap_distance:.0f}km''')
         # ask for destination
-        dest = input('Enter destination icao: ')
+        dest = input('Kirjoita määränpään icao: ')
         # makes sure the input is valid
         while dest != airports[0]['ident'] and dest != airports[1]['ident'] and dest != airports[2]['ident']:
-            print('Input invalid, try again.')
-            dest = input('Enter destination icao: ')
+            print('Virheellinen syöte, kokeile uudestaan.')
+            dest = input('Kirjoita määränpään icao: ')
 
         selected_distance = calculate_distance(current_airport, dest)
         player_range -= selected_distance
@@ -124,10 +131,30 @@ while not game_over:
         current_airport = dest
         if player_range < 0:
             game_over = True
-    # TODO
-    if win and current_airport == start_airport:
+
+        '''
+        kysymys tähän?
+        
+        question = get_question()
+        print(question)
+        vastaus = input()    
+        if vastaus == answer:
+            stamp += 1
+            print("Oikein. Saat leiman.")
+        else:
+            print(f"Väärin. Oikea vastaus on {oikeavastaus}.")
+        if stamp == max_stamp
+            print("Olet kerännyt tarvittavan määrän leimoja.")
+            break (???)
+        '''
+
+    #koska eurooppa osiossa ei voi voittaa, pitäskö tää siirtää pois loopista?
+    if win:
         print(f'''You won! You have {player_range}km of range left.''')
         game_over = True
+
+# turkki-ankara (LTAC), afganistan-kabul (OAKB), japani-tokyo (RJAA)
+# yhdysvallat-seattle (KBFI), kanada-vancouver (CYVR), grönlanti-ilulissat (BGJN)
 
 # if game is over loop stops
 # show game result
