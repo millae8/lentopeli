@@ -36,7 +36,7 @@ def get_airports_start():
         WHERE ident = 'EFHK'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
-    result = cursor.fetchall()
+    result = cursor.fetchall() # pitääkö tässä olla fetchone fetchall:n tilalle?
     return result
 
 # create new game
