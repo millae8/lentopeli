@@ -1,4 +1,5 @@
 # testing zone or something idk lol
+# muistiinpanot ?
 
 # FOR DATABASE TABLE "task"
 '''
