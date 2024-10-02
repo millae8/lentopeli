@@ -44,3 +44,7 @@ def get_airplane():
 
 place = get_airplane()
 print(place)
+
+# ehkä voidaan lisätä tää for loop, jotta ne lentokenttien tiedot näkyy paremmin (?)
+for i in get_airports():
+    print(i)
