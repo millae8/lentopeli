@@ -1,5 +1,16 @@
 # testing zone or something idk lol
 
+# FOR DATABASE TABLE "task"
+'''
+create table task(
+id int not null auto_increment,
+question varchar (40),
+display_answer varchar (40),
+correct_answer varchar (40),
+primary key(id)
+);
+'''
+
 # hakee kysymyksiä randomisti 1 kpl
 def get_question():
     sql = (f"select question,answer from task order by rand() limit 1")

@@ -4,7 +4,7 @@ import mysql.connector
 conn = mysql.connector.connect(
     host='localhost',
     port=3306,
-    database='demogame',
+    database='base',
     user='name',
     password='word',
     autocommit=True,
@@ -71,6 +71,15 @@ def update_location(icao, p_range, g_id):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql, (icao, p_range, g_id))
 
+# hakee kysymyksiä randomisti 1 kpl
+def get_question():
+    sql = (f"select question,correct_answer,display_answer from task order by rand() limit 1")
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    result_row = cursor.fetchone()
+    # palauttaa monikon, paitsi jos tyhjä tulosjoukko -> tulostaa None
+    return result_row
+
 # game starts
 
 # GAME SETTINGS
@@ -82,8 +91,8 @@ game_over = False
 win = False
 
 player_range = 5000 # start range in km = 5000
-#max_stamp = 3
-#stamp = 0
+max_stamp = 3
+stamp = 0
 all_airports = get_airports_start()
 start_airport = all_airports[0]['ident']
 current_airport = start_airport
@@ -126,27 +135,22 @@ while not game_over:
         if player_range < 0:
             game_over = True
 
-        '''
-        kysymys tähän?
-        
-        question = get_question()
-        en muista mitä ope sano
-        print(question)
-        vastaus = input()    
-        if vastaus == answer:
+        question, correct_answer, display_answer = get_question()
+        answer = input(f"{question}: ")    
+        if answer == correct_answer:
             stamp += 1
             print("Oikein. Saat leiman.")
         else:
-            print(f"Väärin. Oikea vastaus on {oikeavastaus}.")
-        if stamp == max_stamp
+            print(f"Väärin. Oikea vastaus on {display_answer}.")
+        if stamp == max_stamp:
             print("Olet kerännyt tarvittavan määrän leimoja.")
-            break (???)
-        '''
+            break
 
-    #koska eurooppa osiossa ei voi voittaa, pitäskö tää siirtää pois loopista?
-    if win:
-        print(f'''You won! You have {player_range}km of range left.''')
-        game_over = True
+
+#formerly in a loop, removed since u can't win in the europe part of the game
+if win:
+    print(f'''You won! You have {player_range}km of range left.''')
+    game_over = True
 
 # turkki-ankara (LTAC), afganistan-kabul (OAKB), japani-tokyo (RJAA)
 # yhdysvallat-seattle (KBFI), kanada-vancouver (CYVR), grönlanti-ilulissat (BGJN)
