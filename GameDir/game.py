@@ -146,14 +146,10 @@ while not game_over:
             print("Olet kerännyt tarvittavan määrän leimoja.")
             break
 
-
 #formerly in a loop, removed since u can't win in the europe part of the game
 if win:
     print(f'''You won! You have {player_range}km of range left.''')
     game_over = True
-
-# turkki-ankara (LTAC), afganistan-kabul (OAKB), japani-tokyo (RJAA)
-# yhdysvallat-seattle (KBFI), kanada-vancouver (CYVR), grönlanti-ilulissat (BGJN)
 
 # if game is over loop stops
 # show game result
