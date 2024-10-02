@@ -40,13 +40,13 @@ def get_airports_start():
     return result
 
 # create new game
-def create_game(p_range, cur_airport, p_name, a_ports):
-    sql = "INSERT INTO game (player_range, location, screen_name) VALUES (%s, %s, %s);"
+def create_game(p_budget, p_range, cur_airport, p_name, a_ports):
+    sql = "INSERT INTO info (budget, player_range, location, screen_name) VALUES (%s, %s, %s);"
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql, (p_range, cur_airport, p_name))
-    g_id = cursor.lastrowid
+    info_id = cursor.lastrowid
 
-    return g_id
+    return info_id
 
 # get airport info
 def get_airport_info(icao):
