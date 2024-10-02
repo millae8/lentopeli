@@ -71,12 +71,6 @@ def update_location(icao, p_range, g_id):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql, (icao, p_range, g_id))
 
-# get a question
-"""
-def get_question():
-    sql = en muista mitä ope sano :c
-"""
-
 # game starts
 
 # GAME SETTINGS
@@ -136,6 +130,7 @@ while not game_over:
         kysymys tähän?
         
         question = get_question()
+        en muista mitä ope sano
         print(question)
         vastaus = input()    
         if vastaus == answer:
