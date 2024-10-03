@@ -6,7 +6,7 @@ conn = mysql.connector.connect(
     port=3306,
     database='base',
     user='name',
-    password='word',
+    password='secret',
     autocommit=True,
     charset='utf8mb4',
     collation='utf8mb4_unicode_ci'
@@ -39,14 +39,12 @@ def get_airports_start():
     result = cursor.fetchall() # pitääkö tässä olla fetchone fetchall:n tilalle?
     return result
 
-# create new game
-def create_game(p_budget, p_range, cur_airport, p_name, a_ports):
-    sql = "INSERT INTO info (budget, player_range, location, screen_name) VALUES (%s, %s, %s);"
+# create new game #vaihdoin info:t game:n ku en saanut muuten toimimaan mut jos muilla toimii saa vaihtaa takasin
+def create_game(p_range, cur_airport, p_name, a_ports):
+    sql = "INSERT INTO game (player_range, location, screen_name) VALUES (%s, %s, %s);"
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql, (p_range, cur_airport, p_name))
-    info_id = cursor.lastrowid
-
-    return info_id
+    g_id = cursor.lastrowid
 
 # get airport info
 def get_airport_info(icao):
@@ -90,7 +88,7 @@ player = input('kirjoita pelaajan nimi: ')
 game_over = False
 win = False
 
-player_range = 5000 # start range in km = 5000
+player_range = 10000 # start range in km = 10000
 max_stamp = 3
 stamp = 0
 all_airports = get_airports_start()
@@ -145,6 +143,63 @@ while not game_over:
         if stamp == max_stamp:
             print("Olet kerännyt tarvittavan määrän leimoja.")
             break
+
+_______________________________________________________
+# tästä alkaa euroopan jälkeinen osio
+
+#budget = 6000 #vai onko tämä olemassa jo euroopalle?
+
+# turkey
+def get_airport1():
+    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
+        FROM airport
+        WHERE ident = 'LTAC'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+# get current airport info
+airport = get_airport_info(current_airport)
+# show game status
+print(f'''You are at {airport['name']}.''')
+print(f'''You have {player_range:.0f}km of range.''')
+# pause
+input('\033[32mPress Enter to continue...\033[0m')
+
+#turkin lentokenttä
+airports = get_airport1()
+print(f'''Seuraava kohteesi on: ''')
+for airport in airports:
+    ap_distance = calculate_distance(current_airport, airport['ident'])
+    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+dest = airport['ident']
+
+selected_distance = calculate_distance(current_airport, dest)
+player_range -= selected_distance
+update_location(dest, player_range, game_id)
+current_airport = dest
+if player_range < 0:
+    game_over = True
+#pause
+input('\033[32mPress Enter to continue...\033[0m')
+
+#paikan tietty kysymys
+vastaus1 = input("Tietty kysymys A) Vastaus B) Vastaus C) Vastaus: ")
+if vastaus1 == 'a' or 'A':
+    print("Vastasit oikein.")
+    #budget += 500
+    #print(f"Tämän hetkinen budjettisi on {budget}")
+else:
+    print("Vastasit väärin, oikea vastaus on A) Vastaus.")
+    #print(f"Tämän hetkinen budjettisi on {budget}")
+
+airport = get_airport_info(current_airport)
+# show game status
+print(f'''You are at {airport['name']}.''')
+print(f'''You have {player_range:.0f}km of range.''')
+# pause
+input('\033[32mPress Enter to continue...\033[0m')
 
 #formerly in a loop, removed since u can't win in the europe part of the game
 if win:
