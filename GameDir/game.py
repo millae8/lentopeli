@@ -91,6 +91,7 @@ win = False
 player_range = 10000 # start range in km = 10000
 max_stamp = 3
 stamp = 0
+budget = 6000
 all_airports = get_airports_start()
 start_airport = all_airports[0]['ident']
 current_airport = start_airport
@@ -147,8 +148,6 @@ while not game_over:
 _______________________________________________________
 # tästä alkaa euroopan jälkeinen osio
 
-#budget = 6000 #vai onko tämä olemassa jo euroopalle?
-
 # turkey
 def get_airport1():
     sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
@@ -188,11 +187,11 @@ input('\033[32mPress Enter to continue...\033[0m')
 vastaus1 = input("Tietty kysymys A) Vastaus B) Vastaus C) Vastaus: ")
 if vastaus1 == 'a' or 'A':
     print("Vastasit oikein.")
-    #budget += 500
-    #print(f"Tämän hetkinen budjettisi on {budget}")
+    budget += 500
+    print(f"Tämän hetkinen budjettisi on {budget}")
 else:
     print("Vastasit väärin, oikea vastaus on A) Vastaus.")
-    #print(f"Tämän hetkinen budjettisi on {budget}")
+    print(f"Tämän hetkinen budjettisi on {budget}")
 
 airport = get_airport_info(current_airport)
 # show game status
