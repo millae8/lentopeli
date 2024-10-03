@@ -201,7 +201,7 @@ print(f'''You have {player_range:.0f}km of range.''')
 # pause
 input('\033[32mPress Enter to continue...\033[0m')
 
-#formerly in a loop, removed since u can't win in the europe part of the game
+#formerly in the game loop (eu part), removed since u can't win in the europe part of the game
 if win:
     print(f'''You won! You have {player_range}km of range left.''')
     game_over = True
