@@ -190,7 +190,7 @@ if vastaus1 == 'a' or 'A':
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
-    print("Vastasit väärin, oikea vastaus on A) {Ei vaikuta}.") # {} sisällä vastaus heti?
+    print("Vastasit väärin, oikea vastaus on A) Ei vaikuta.")
     print(f"Tämän hetkinen budjettisi on {budget}")
 
 
