@@ -27,9 +27,7 @@ def get_airports():
     result = cursor.fetchall()
     return result
 
-# starting airport 
-# ident ja type ei tarvita, otin ne pois for now(?)
-# ident tarvitaan koska se käyttää sitä löytääkseen oikeen lentokentän: where ident = efhk
+# starting airport
 def get_airports_start():
     sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
         FROM airport
@@ -40,10 +38,10 @@ def get_airports_start():
     return result
 
 # create new game #vaihdoin info:t game:n ku en saanut muuten toimimaan mut jos muilla toimii saa vaihtaa takasin
-def create_game(p_range, cur_airport, p_name, a_ports):
-    sql = "INSERT INTO game (player_range, location, screen_name) VALUES (%s, %s, %s);"
+def create_game(cur_airport, p_name, a_ports):
+    sql = "INSERT INTO game (location, screen_name) VALUES (%s, %s);"
     cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql, (p_range, cur_airport, p_name))
+    cursor.execute(sql, (cur_airport, p_name))
     g_id = cursor.lastrowid
 
 # get airport info
@@ -64,10 +62,10 @@ def calculate_distance(current, target):
                              (end['latitude_deg'], end['longitude_deg'])).km
 
 # update location
-def update_location(icao, p_range, g_id):
-    sql = f'''UPDATE game SET location = %s, player_range = %s WHERE id = %s'''
+def update_location(icao, g_id):
+    sql = f'''UPDATE game SET location = %s WHERE id = %s'''
     cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql, (icao, p_range, g_id))
+    cursor.execute(sql, (icao, g_id))
 
 # hakee kysymyksiä randomisti 1 kpl
 def get_question():
@@ -88,14 +86,13 @@ player = input('kirjoita pelaajan nimi: ')
 game_over = False
 win = False
 
-player_range = 10000 # start range in km = 10000
 max_stamp = 3
 stamp = 0
 budget = 6000
 all_airports = get_airports_start()
 start_airport = all_airports[0]['ident']
 current_airport = start_airport
-game_id = create_game(player_range, start_airport, player, all_airports)
+game_id = create_game(start_airport, player, all_airports)
 
 # GAME LOOP
 
@@ -104,48 +101,37 @@ while not game_over:
     airport = get_airport_info(current_airport)
     # show game status
     print(f'''Olet kohteessa {airport['name']}.''')
-    print(f'''Sinulla on {player_range:.0f}km of range.''')
     # pause
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
-    # if no range, game over
-    # show airports in range. if none, game over
     airports = get_airports()
-    print(f'''\033[34mThere are {len(airports)} airports in range: \033[0m''')
-    if len(airports) == 0:
-        print('You are out of range.')
-        game_over = True
-    else:
-        print(f'''Airports: ''')
-        for airport in airports:
-            ap_distance = calculate_distance(current_airport, airport['ident'])
-            print(f'''{airport['name']}, icao: {airport['ident']}, distance: {ap_distance:.0f}km''')
-        # ask for destination
+    print(f'''Airports: ''')
+    for airport in airports:
+        ap_distance = calculate_distance(current_airport, airport['ident'])
+        print(f'''{airport['name']}, icao: {airport['ident']}, distance: {ap_distance:.0f}km''')
+    # ask for destination
+    dest = input('Kirjoita määränpään icao: ')
+    # makes sure the input is valid
+    while dest != airports[0]['ident'] and dest != airports[1]['ident'] and dest != airports[2]['ident']:
+        print('Virheellinen syöte, kokeile uudestaan.')
         dest = input('Kirjoita määränpään icao: ')
-        # makes sure the input is valid
-        while dest != airports[0]['ident'] and dest != airports[1]['ident'] and dest != airports[2]['ident']:
-            print('Virheellinen syöte, kokeile uudestaan.')
-            dest = input('Kirjoita määränpään icao: ')
 
-        selected_distance = calculate_distance(current_airport, dest)
-        player_range -= selected_distance
-        update_location(dest, player_range, game_id)
-        current_airport = dest
-        if player_range < 0:
-            game_over = True
+    selected_distance = calculate_distance(current_airport, dest)
+    update_location(dest, game_id)
+    current_airport = dest
 
-        question, correct_answer, display_answer = get_question()
-        answer = input(f"{question}: ")    
-        if answer == correct_answer:
-            stamp += 1
-            print("Oikein. Saat leiman.")
-        else:
-            print(f"Väärin. Oikea vastaus on {display_answer}.")
-        if stamp == max_stamp:
-            print("Olet kerännyt tarvittavan määrän leimoja.")
-            break
+    question, correct_answer, display_answer = get_question()
+    answer = input(f"{question}: ")
+    if answer == correct_answer:
+        stamp += 1
+        print("Oikein. Saat leiman.")
+    else:
+        print(f"Väärin. Oikea vastaus on {display_answer}.")
+    if stamp == max_stamp:
+        print("Olet kerännyt tarvittavan määrän leimoja.")
+        break
 
-_______________________________________________________
+#_______________________________________________________
 # tästä alkaa euroopan jälkeinen osio
 
 # turkey
@@ -162,7 +148,6 @@ def get_airport1():
 airport = get_airport_info(current_airport)
 # show game status
 print(f'''You are at {airport['name']}.''')
-print(f'''You have {player_range:.0f}km of range.''') # tarvitaanko tätä? Me ei käytetä range
 # pause
 input('\033[32mPress Enter to continue...\033[0m')
 
@@ -175,16 +160,13 @@ for airport in airports:
 dest = airport['ident']
 
 selected_distance = calculate_distance(current_airport, dest)
-player_range -= selected_distance
-update_location(dest, player_range, game_id)
+update_location(dest, game_id)
 current_airport = dest
-if player_range < 0: 
-    game_over = True
 #pause
 input('\033[32mPress Enter to continue...\033[0m')
 
 #paikan tietty kysymys
-vastaus1 = input("Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa: ")
+vastaus1 = input('''Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa : ''')
 if vastaus1 == 'a' or 'A':
     print("Vastasit oikein.")
     budget += 500
@@ -193,21 +175,21 @@ else:
     print("Vastasit väärin, oikea vastaus on A) Ei vaikuta.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
 
-________________________________________________
+#________________________________________________
 # Afganistan
 
 def get_airport2():
-    sql = '''Select iso_country, ident, name, type, latitude_deg, longitude_deg
+    sql = """Select iso_country, ident, name, latitude_deg, longitude_deg
         from airport
-        where ident =   '''
-    cursor = connection.cursor
+        where ident = 'OAKB'"""
+    cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
+    result = cursor.fetchall()
     return result
 
-airport = get_airport2_info(current_airport)
+airport = get_airport_info(current_airport)
 
-print(f''' You are at {airport['Afganistan']}.''')
-print(f''' You have {player_range:.0f}km of range.''')
+print(f'''You are at {airport['name']}.''')
 # pause
 input('\033[32mPress Enter to continue...\033[0m')
 
@@ -215,20 +197,19 @@ input('\033[32mPress Enter to continue...\033[0m')
 # afganistanin lentokenttä
 airports = get_airport2()
 print(f'''Seuraava kohteesi on: ''')
-for aiprort in airports:
-    ap_distance = calculate_distance(current_airport, airport(['ident'])
-    print(f'''{airport['name']}, distance: {ap_distance:.of}km''')
-    dest = airport['ident']
+for airport in airports:
+    ap_distance = calculate_distance(current_airport, airport['ident'])
+    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+dest = airport['ident']
 
 selected_distance = calculate_distance(current_airport, dest)
-player_range -= selected_distance
-update_location(dest,player_range, game_id)
-current_aiport = dest
-    continue
+update_location(dest, game_id)
+current_airport = dest
+input('\033[32mPress Enter to continue...\033[0m')
 
 # afganistanin kysymys
 
-vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? A) 15% B) 0,5-1% C) 2-3% ")
+vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? A) 15% B) 0,5-1% C) 2-3% : ")
 if vastaus2 == 'c' or 'C':
     print("Vastasit oikein.")
     budget += 500
@@ -237,25 +218,88 @@ else:
     print("Vastasit väärin, oikea vastaus on C) 2-3%.")
     print(f'Tämän hetkinen budjettisi on {budget}.')
 
-airports = get_airport2_info(current_airport)
-# show game status
-
-
-input('\033[32mPress Enter to continue...\033[0m')
+def get_airport3():
+    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
+        FROM airport
+        WHERE ident = 'RJAA'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
 
 airport = get_airport_info(current_airport)
 # show game status
 print(f'''You are at {airport['name']}.''')
-print(f'''You have {player_range:.0f}km of range.''')
 # pause
 input('\033[32mPress Enter to continue...\033[0m')
 
+#------------------------------------------------
+#japani
+airports = get_airport3()
+print(f'''Seuraava kohteesi on: ''')
+for airport in airports:
+    ap_distance = calculate_distance(current_airport, airport['ident'])
+    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+dest = airport['ident']
+
+selected_distance = calculate_distance(current_airport, dest)
+update_location(dest, game_id)
+current_airport = dest
+input('\033[32mPress Enter to continue...\033[0m')
+
+#japanin kysymys
+vastaus3 = input("Kysymys? A) vastaus B) vastaus : ")
+if vastaus3 == 'a' or 'A':
+    print("Vastasit oikein.")
+    budget += 500
+    print(f"Tämän hetkinen budjettisi on {budget}")
+else:
+    print("Vastasit väärin, oikea vastaus on A) vastaus.")
+    print(f"Tämän hetkinen budjettisi on {budget}.")
+
+# yhdysvallat
+def get_airport4():
+    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
+        FROM airport
+        WHERE ident = 'KBFI'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+airport = get_airport_info(current_airport)
+# show game status
+print(f'''You are at {airport['name']}.''')
+# pause
+input('\033[32mPress Enter to continue...\033[0m')
+
+airports = get_airport4()
+print(f'''Seuraava kohteesi on: ''')
+for airport in airports:
+    ap_distance = calculate_distance(current_airport, airport['ident'])
+    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+dest = airport['ident']
+
+selected_distance = calculate_distance(current_airport, dest)
+update_location(dest, game_id)
+current_airport = dest
+input('\033[32mPress Enter to continue...\033[0m')
+
+#usan kysymys
+vastaus3 = input("Kysymys? A) vastaus B) vastaus : ")
+if vastaus3 == 'a' or 'A':
+    print("Vastasit oikein.")
+    budget += 500
+    print(f"Tämän hetkinen budjettisi on {budget}")
+else:
+    print("Vastasit väärin, oikea vastaus on A) vastaus.")
+    print(f"Tämän hetkinen budjettisi on {budget}.")
+
 #formerly in the game loop (eu part), removed since u can't win in the europe part of the game
 if win:
-    print(f'''You won! You have {player_range}km of range left.''')
+    print(f'''You won!''')
     game_over = True
 
 # if game is over loop stops
 # show game result
 print(f'''{'You won!' if win else 'You lost!'}''')
-print(f'''Your range is {player_range:.0f}km''')
