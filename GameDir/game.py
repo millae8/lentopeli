@@ -106,7 +106,7 @@ while not game_over:
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
     airports = get_airports()
-    print(f'''Airports: ''')
+    print(f'''Lentokentät: ''')
     for airport in airports:
         ap_distance = calculate_distance(current_airport, airport['ident'])
         print(f'''{airport['name']}, icao: {airport['ident']}, distance: {ap_distance:.0f}km''')
@@ -209,7 +209,6 @@ current_airport = dest
 input('\033[32mPress Enter to continue...\033[0m')
 
 # afganistanin kysymys
-
 vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? A) 15% B) 0,5-1% C) 2-3% : ")
 if vastaus2 == 'c' or 'C':
     print("Vastasit oikein.")
@@ -287,8 +286,8 @@ current_airport = dest
 input('\033[32mPress Enter to continue...\033[0m')
 
 #usan kysymys
-vastaus3 = input("Kysymys? A) vastaus B) vastaus : ")
-if vastaus3 == 'a' or 'A':
+vastaus4 = input("Kysymys? A) vastaus B) vastaus : ")
+if vastaus4 == 'a' or 'A':
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
