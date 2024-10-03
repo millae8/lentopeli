@@ -162,7 +162,7 @@ def get_airport1():
 airport = get_airport_info(current_airport)
 # show game status
 print(f'''You are at {airport['name']}.''')
-print(f'''You have {player_range:.0f}km of range.''')
+print(f'''You have {player_range:.0f}km of range.''') # tarvitaanko tätä? Me ei käytetä range
 # pause
 input('\033[32mPress Enter to continue...\033[0m')
 
@@ -178,20 +178,22 @@ selected_distance = calculate_distance(current_airport, dest)
 player_range -= selected_distance
 update_location(dest, player_range, game_id)
 current_airport = dest
-if player_range < 0:
+if player_range < 0: 
     game_over = True
 #pause
 input('\033[32mPress Enter to continue...\033[0m')
 
 #paikan tietty kysymys
-vastaus1 = input("Tietty kysymys A) Vastaus B) Vastaus C) Vastaus: ")
+vastaus1 = input("Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa: ")
 if vastaus1 == 'a' or 'A':
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
-    print("Vastasit väärin, oikea vastaus on A) Vastaus.")
+    print("Vastasit väärin, oikea vastaus on A) {Ei vaikuta}.") # {} sisällä vastaus heti?
     print(f"Tämän hetkinen budjettisi on {budget}")
+
+
 
 airport = get_airport_info(current_airport)
 # show game status
