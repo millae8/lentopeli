@@ -191,9 +191,57 @@ if vastaus1 == 'a' or 'A':
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
     print("Vastasit väärin, oikea vastaus on A) Ei vaikuta.")
-    print(f"Tämän hetkinen budjettisi on {budget}")
+    print(f"Tämän hetkinen budjettisi on {budget}.")
+
+________________________________________________
+# Afganistan
+
+def get_airport2():
+    sql = '''Select iso_country, ident, name, type, latitude_deg, longitude_deg
+        from airport
+        where ident =   '''
+    cursor = connection.cursor
+    cursor.execute(sql)
+    return result
+
+airport = get_airport2_info(current_airport)
+
+print(f''' You are at {airport['Afganistan']}.''')
+print(f''' You have {player_range:.0f}km of range.''')
+# pause
+input('\033[32mPress Enter to continue...\033[0m')
+
+# turkista afganistaniin
+# afganistanin lentokenttä
+airports = get_airport2()
+print(f'''Seuraava kohteesi on: ''')
+for aiprort in airports:
+    ap_distance = calculate_distance(current_airport, airport(['ident'])
+    print(f'''{airport['name']}, distance: {ap_distance:.of}km''')
+    dest = airport['ident']
+
+selected_distance = calculate_distance(current_airport, dest)
+player_range -= selected_distance
+update_location(dest,player_range, game_id)
+current_aiport = dest
+    continue
+
+# afganistanin kysymys
+
+vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? A) 15% B) 0,5-1% C) 2-3% ")
+if vastaus2 == 'c' or 'C':
+    print("Vastasit oikein.")
+    budget += 500
+    print(f"Tämän hetkinen budjettisi on {budget}.")
+else:
+    print("Vastasit väärin, oikea vastaus on C) 2-3%.")
+    print(f'Tämän hetkinen budjettisi on {budget}.')
+
+airports = get_airport2_info(current_airport)
+# show game status
 
 
+input('\033[32mPress Enter to continue...\033[0m')
 
 airport = get_airport_info(current_airport)
 # show game status
