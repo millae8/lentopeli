@@ -37,7 +37,8 @@ def get_airports_start():
     result = cursor.fetchall() # pitääkö tässä olla fetchone fetchall:n tilalle?
     return result
 
-# create new game #vaihdoin info:t game:n ku en saanut muuten toimimaan mut jos muilla toimii saa vaihtaa takasin
+# create new game
+# #vaihdoin info:t game:n ku en saanut muuten toimimaan mut jos muilla toimii saa vaihtaa takasin
 def create_game(cur_airport, p_name, a_ports):
     sql = "INSERT INTO game (location, screen_name) VALUES (%s, %s);"
     cursor = conn.cursor(dictionary=True)
@@ -165,7 +166,7 @@ current_airport = dest
 #pause
 input('\033[32mPress Enter to continue...\033[0m')
 
-#paikan tietty kysymys
+#turkin kysymys
 vastaus1 = input('''Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa : ''')
 if vastaus1 == 'a' or 'A':
     print("Vastasit oikein.")
