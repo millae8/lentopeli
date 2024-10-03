@@ -120,7 +120,7 @@ while not game_over:
         for airport in airports:
             ap_distance = calculate_distance(current_airport, airport['ident'])
             print(f'''{airport['name']}, icao: {airport['ident']}, distance: {ap_distance:.0f}km''')
-        # ask for destination
+        # ask for destination  # antaa vain yhden lentokentän (?)
         dest = input('Kirjoita määränpään icao: ')
         # makes sure the input is valid
         while dest != airports[0]['ident'] and dest != airports[1]['ident'] and dest != airports[2]['ident']:
