@@ -130,6 +130,7 @@ while not game_over:
         print(f"Väärin. Oikea vastaus on {display_answer}.")
     if stamp == max_stamp:
         print("Olet kerännyt tarvittavan määrän leimoja.")
+        print("Saat passin. \nVoit suuntautua Euroopan ulkopuolella.\n")
         break
 
 #_______________________________________________________
