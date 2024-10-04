@@ -13,7 +13,6 @@ conn = mysql.connector.connect(
 )
 
 # FUNCTIONS
-
 # random 3 airports 
 def get_airports():
     sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg
@@ -29,9 +28,11 @@ def get_airports():
 
 # starting airport
 def get_airports_start():
-    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
-        FROM airport
-        WHERE ident = 'EFHK'"""
+    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
+        from country
+        left join airport
+        on airport.iso_country = country.iso_country
+        where ident = 'EFHK'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall() # pitääkö tässä olla fetchone fetchall:n tilalle?
@@ -339,18 +340,17 @@ current_airport = dest
 input('\033[32mPress Enter to continue...\033[0m')
 
 # Canadan kysymys
-vastaus5 = input(" a)  b)  c)  vastaus : ")
-if vastaus4 == 'a' or 'A':
+vastaus5 = input(" Paljonko merenpinnan ennustetaan nousevan 2100-luvulle mennessä? a) 5km b) 1-1,5m c) 60-80cm
+ vastaus : ")
+if vastaus4 == 'c' or 'C':
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
-    print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
+    print("Vastasit väärin, oikea vastaus on c) 60-80cm.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
 
-
-
-
+#___________________________________________________________________
 
 #formerly in the game loop (eu part), removed since u can't win in the europe part of the game
 if win:
