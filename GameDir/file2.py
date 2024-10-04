@@ -5,7 +5,7 @@
 # yhdysvallat - seattle (KBFI), kanada - vancouver (CYVR), grönlanti - ilulissat (BGJN)
 
 # sain tehtyy sql joka näyttää maan nimi lentokentän tietojen mukaan, 
-mutta se ei kai jossain puuttuu se, että maan nimi näkyy, koska se herjaa mulla, kun yritän saada maan nimi näkymään pelissä. 
+mutta jossain puuttuu se, että maan nimi näkyy, koska se herjaa mulla, kun yritän saada maan nimi näkymään pelissä. 
 
 # FOR DATABASE TABLE "task"
 '''
