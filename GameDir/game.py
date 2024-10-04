@@ -138,9 +138,11 @@ while not game_over:
 
 # turkey
 def get_airport1():
-    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
-        FROM airport
-        WHERE ident = 'LTAC'"""
+    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
+        from country
+        left join airport
+        on airport.iso_country = country.iso_country
+        where ident = 'LTAC'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -304,6 +306,51 @@ if vastaus4 == 'a' or 'A':
 else:
     print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
+# __________________________________________________________________________________________________________________________________________
+# Canada
+
+def get_airport5():
+    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airprot
+        ON airport.iso_country = country.iso_country 
+        WHERE ident = 'CYVR'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+airport = get_airport_info(current_airport)
+# show game status
+print(f'''You are at {airport['name']}.''')
+# pause
+input('\033[32mPress Enter to continue...\033[0m')
+
+airports = get_airport5()
+print(f'''Seuraava kohteesi on: ''')
+for airport in airports:
+    ap_distance = calculate_distance(current_airport, airport['ident'])
+    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+dest = airport['ident']
+
+selected_distance = calculate_distance(current_airport, dest)
+update_location(dest, game_id)
+current_airport = dest
+input('\033[32mPress Enter to continue...\033[0m')
+
+# Canadan kysymys
+vastaus5 = input(" a)  b)  c)  vastaus : ")
+if vastaus4 == 'a' or 'A':
+    print("Vastasit oikein.")
+    budget += 500
+    print(f"Tämän hetkinen budjettisi on {budget}")
+else:
+    print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
+    print(f"Tämän hetkinen budjettisi on {budget}.")
+
+
+
+
 
 #formerly in the game loop (eu part), removed since u can't win in the europe part of the game
 if win:
