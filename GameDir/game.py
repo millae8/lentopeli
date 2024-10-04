@@ -4,9 +4,9 @@ import mysql.connector
 conn = mysql.connector.connect(
     host='localhost',
     port=3306,
-    database='base',
-    user='name',
-    password='secret',
+    database='bawk',
+    user='root',
+    password='A19ts-Vt89',
     autocommit=True,
     charset='utf8mb4',
     collation='utf8mb4_unicode_ci'
@@ -16,10 +16,12 @@ conn = mysql.connector.connect(
 
 # random 3 airports 
 def get_airports():
-    sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg
-        FROM airport
-        WHERE continent = 'EU' 
-        AND type='large_airport'
+    sql = """SELECT country.name AS countryName, airport.iso_country, airport.ident, airport.name AS airportName, airport.latitude_deg, airport.longitude_deg, airport.type
+        FROM country
+        LEFT JOIN airport
+        ON airport.iso_country = country.iso_country
+        WHERE airport.continent = 'EU' 
+        AND airport.type = 'large_airport'
         ORDER by RAND()
         LIMIT 3;"""
     cursor = conn.cursor(dictionary=True)
@@ -29,12 +31,14 @@ def get_airports():
 
 # starting airport
 def get_airports_start():
-    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
-        FROM airport
-        WHERE ident = 'EFHK'"""
+    sql = """SELECT country.name AS countryName, airport.iso_country, airport.ident, airport.name AS airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT JOIN airport
+        ON airport.iso_country = country.iso_country
+        WHERE airport.ident = 'EFHK'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
-    result = cursor.fetchall() # pitääkö tässä olla fetchone fetchall:n tilalle?
+    result = cursor.fetchall() # pitääkö tässä olla fetchone fetchall:n tilalle? #keep as is
     return result
 
 # create new game
@@ -47,9 +51,11 @@ def create_game(cur_airport, p_name, a_ports):
 
 # get airport info
 def get_airport_info(icao):
-    sql = f'''SELECT iso_country, ident, name, latitude_deg, longitude_deg
-                  FROM airport
-                  WHERE ident = %s'''
+    sql = f'''SELECT country.name AS countryName, airport.iso_country, airport.ident, airport.name AS airportName, airport.latitude_deg, airport.longitude_deg
+                  FROM country
+                  LEFT JOIN airport
+                  ON airport.iso_country = country.iso_country
+                  WHERE airport.ident = %s'''
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql, (icao,))
     result = cursor.fetchone()
@@ -101,7 +107,7 @@ while not game_over:
     # get current airport info
     airport = get_airport_info(current_airport)
     # show game status
-    print(f'''Olet kohteessa {airport['name']}.''')
+    print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
     # pause
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -109,7 +115,7 @@ while not game_over:
     print(f'''Lentokentät: ''')
     for airport in airports:
         ap_distance = calculate_distance(current_airport, airport['ident'])
-        print(f'''{airport['name']}, icao: {airport['ident']}, distance: {ap_distance:.0f}km''')
+        print(f'''{airport['airportName']}, icao: {airport['ident']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
     # ask for destination
     dest = input('Kirjoita määränpään icao: ')
     # makes sure the input is valid
@@ -130,17 +136,19 @@ while not game_over:
         print(f"Väärin. Oikea vastaus on {display_answer}.")
     if stamp == max_stamp:
         print("Olet kerännyt tarvittavan määrän leimoja.")
-        print("Saat passin. \nVoit suuntautua Euroopan ulkopuolella.\n")
+        print("Saat passin. \nVoit suuntautua Euroopan ulkopuolelle.\n")
         break
 
 #_______________________________________________________
 # tästä alkaa euroopan jälkeinen osio
-
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 # turkey
 def get_airport1():
-    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
-        FROM airport
-        WHERE ident = 'LTAC'"""
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'LTAC'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -149,23 +157,21 @@ def get_airport1():
 # get current airport info
 airport = get_airport_info(current_airport)
 # show game status
-print(f'''You are at {airport['name']}.''')
-# pause
-input('\033[32mPress Enter to continue...\033[0m')
+print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
 #turkin lentokenttä
 airports = get_airport1()
 print(f'''Seuraava kohteesi on: ''')
 for airport in airports:
     ap_distance = calculate_distance(current_airport, airport['ident'])
-    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+    print(f'''{airport['airportName']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
 dest = airport['ident']
 
 selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
 #pause
-input('\033[32mPress Enter to continue...\033[0m')
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #turkin kysymys
 vastaus1 = input('''Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa : ''')
@@ -176,26 +182,25 @@ if vastaus1 == 'a' or 'A':
 else:
     print("Vastasit väärin, oikea vastaus on A) Ei vaikuta.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #________________________________________________
 # Afganistan
 
 def get_airport2():
-    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
-        from country
-        left join airport
-        on airport.iso_country = country.iso_country 
-        where ident = 'OAKB'"""
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'OAKB'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
-    result = cursor.fetchall() # kannattaako nää fetchall muuttaa fetchone vai ei?
+    result = cursor.fetchall()
     return result
 
 airport = get_airport_info(current_airport)
 
-print(f'''You are at {airport['name']}.''')
-# pause
-input('\033[32mPress Enter to continue...\033[0m')
+print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
 # turkista afganistaniin
 # afganistanin lentokenttä
@@ -203,13 +208,13 @@ airports = get_airport2()
 print(f'''Seuraava kohteesi on: ''')
 for airport in airports:
     ap_distance = calculate_distance(current_airport, airport['ident'])
-    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+    print(f'''{airport['airportName']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
 dest = airport['ident']
 
 selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
-input('\033[32mPress Enter to continue...\033[0m')
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # afganistanin kysymys
 vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? a) 15% b) 0,5-1% c) 2-3% : ")
@@ -220,15 +225,15 @@ if vastaus2 == 'c' or 'C':
 else:
     print("Vastasit väärin, oikea vastaus on c) 2-3%.")
     print(f'Tämän hetkinen budjettisi on {budget}.')
-#________________________________________________________
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # Japan
 def get_airport3():
-    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
-        from country
-        left join airport
-        on airport.iso_country = country.iso_country 
-        where ident ='RJAA'"""
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'RJAA'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -236,23 +241,20 @@ def get_airport3():
 
 airport = get_airport_info(current_airport)
 # show game status
-print(f'''You are at {airport['name']}.''')
-# pause
-input('\033[32mPress Enter to continue...\033[0m')
+print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
-#------------------------------------------------
 #japani
 airports = get_airport3()
 print(f'''Seuraava kohteesi on: ''')
 for airport in airports:
     ap_distance = calculate_distance(current_airport, airport['ident'])
-    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+    print(f'''{airport['airportName']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
 dest = airport['ident']
 
 selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
-input('\033[32mPress Enter to continue...\033[0m')
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #japanin kysymys
 vastaus3 = input("Mikä on yhden henkilön CO2-päästöt lentomatkalla Tokiosta Dubliniin? a) 1336.5kg b) 1335.6kg c) 1563.3kg vastaus : ")
@@ -263,15 +265,15 @@ if vastaus3 == 'b' or 'B':
 else:
     print("Vastasit väärin, oikea vastaus on b) 1335.6kg.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
-#___________________________________________________________________-
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # yhdysvallat
 def get_airport4():
-    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
         FROM country
-        LEFT join airprot
+        LEFT join airport
         ON airport.iso_country = country.iso_country 
-        WHERE ident = 'KBFI'"""
+        WHERE airport.ident = 'KBFI'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -279,24 +281,23 @@ def get_airport4():
 
 airport = get_airport_info(current_airport)
 # show game status
-print(f'''You are at {airport['name']}.''')
-# pause
-input('\033[32mPress Enter to continue...\033[0m')
+print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
 airports = get_airport4()
 print(f'''Seuraava kohteesi on: ''')
 for airport in airports:
     ap_distance = calculate_distance(current_airport, airport['ident'])
-    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+    for country in airports:
+        print(f'''{airport['airportName']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
 dest = airport['ident']
 
 selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
-input('\033[32mPress Enter to continue...\033[0m')
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #usan kysymys
-vastaus4 = input("Kuinka paljon hiilidioksidia syntyy yhdestä kilosta kerosiinia polttaessa? a) 3.16kg b) 0.54kg c) 2.7kgA) vastaus B) vastaus : ")
+vastaus4 = input("Kuinka paljon hiilidioksidia syntyy yhdestä kilosta kerosiinia polttaessa? a) 3.16kg b) 0.54kg c) 2.7kg : ")
 if vastaus4 == 'a' or 'A':
     print("Vastasit oikein.")
     budget += 500
