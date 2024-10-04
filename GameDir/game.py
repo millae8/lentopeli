@@ -305,15 +305,16 @@ if vastaus4 == 'a' or 'A':
 else:
     print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 # __________________________________________________________________________________________________________________________________________
 # Canada
 
 def get_airport5():
-    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
         FROM country
-        LEFT join airprot
+        LEFT join airport
         ON airport.iso_country = country.iso_country 
-        WHERE ident = 'CYVR'"""
+        WHERE airport.ident = 'CYVR'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -321,26 +322,23 @@ def get_airport5():
 
 airport = get_airport_info(current_airport)
 # show game status
-print(f'''You are at {airport['name']}.''')
-# pause
-input('\033[32mPress Enter to continue...\033[0m')
+print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
 airports = get_airport5()
 print(f'''Seuraava kohteesi on: ''')
 for airport in airports:
     ap_distance = calculate_distance(current_airport, airport['ident'])
-    print(f'''{airport['name']}, distance: {ap_distance:.0f}km''')
+    print(f'''{airport['airportName']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
 dest = airport['ident']
 
 selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
-input('\033[32mPress Enter to continue...\033[0m')
+input('\033[32mPainaEnter jatkaaksesi...\033[0m')
 
-# Canadan kysymys
-vastaus5 = input(" Paljonko merenpinnan ennustetaan nousevan 2100-luvulle mennessä? a) 5km b) 1-1,5m c) 60-80cm
- vastaus : ")
-if vastaus4 == 'c' or 'C':
+# Kanadan kysymys
+vastaus5 = input("Paljonko merenpinnan ennustetaan nousevan 2100-luvulle mennessä? a) 5km b) 1-1,5m c) 60-80cm : ")
+if vastaus5 == 'c' or 'C':
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
