@@ -4,6 +4,9 @@
 # turkki - ankara (LTAC), afganistan - kabul (OAKB), japani - tokyo (RJAA)
 # yhdysvallat - seattle (KBFI), kanada - vancouver (CYVR), grönlanti - ilulissat (BGJN)
 
+# sain tehtyy sql joka näyttää maan nimi lentokentän tietojen mukaan, 
+mutta se ei kai jossain puuttuu se, että maan nimi näkyy, koska se herjaa mulla, kun yritän saada maan nimi näkymään pelissä. 
+
 # FOR DATABASE TABLE "task"
 '''
 create table task(
