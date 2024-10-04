@@ -259,8 +259,10 @@ else:
 
 # yhdysvallat
 def get_airport4():
-    sql = """SELECT iso_country, ident, name, latitude_deg, longitude_deg
-        FROM airport
+    sql = """SELECT country.name, airport.iso_country, airport.ident, airport.name, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airprot
+        ON airport.iso_country = country.iso_country 
         WHERE ident = 'KBFI'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
