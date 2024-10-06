@@ -96,6 +96,7 @@ win = False
 max_stamp = 3
 stamp = 0
 budget = 6000
+country_list = []
 all_airports = get_airports_start()
 start_airport = all_airports[0]['ident']
 current_airport = start_airport
@@ -118,10 +119,20 @@ while not game_over:
         print(f'''{airport['airportName']}, icao: {airport['ident']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
     # ask for destination
     dest = input('Kirjoita määränpään icao: ')
+    if dest in country_list:
+        print(f"Olet jo käynyt kohteessas {dest}. Valitse uusi kohde.")
+        dest = input('Kirjoita määränpään icao: ')
+    else:
+        country_list.append(dest)
     # makes sure the input is valid
     while dest != airports[0]['ident'] and dest != airports[1]['ident'] and dest != airports[2]['ident']:
         print('Virheellinen syöte, kokeile uudestaan.')
         dest = input('Kirjoita määränpään icao: ')
+        if dest in country_list:
+            print(f"Olet jo käynyt kohteessa {dest}. Valitse uusi kohde.")
+            dest = input('Kirjoita määränpään icao: ')
+        else:
+            country_list.append(dest)
 
     selected_distance = calculate_distance(current_airport, dest)
     update_location(dest, game_id)
@@ -212,13 +223,13 @@ current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # afganistanin kysymys
-vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? a) 15% b) 0,5-1% c) 2-3% : ")
+vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? A) 15% B) 0,5-1% C) 2-3% : ")
 if vastaus2.upper() == "C":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}.")
 else:
-    print("Vastasit väärin, oikea vastaus on c) 2-3%.")
+    print("Vastasit väärin, oikea vastaus on C) 2-3%.")
     print(f'Tämän hetkinen budjettisi on {budget}.')
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -250,13 +261,13 @@ current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #japanin kysymys
-vastaus3 = input("Mikä on yhden henkilön CO2-päästöt lentomatkalla Tokiosta Dubliniin? a) 1336.5kg b) 1335.6kg c) 1563.3kg vastaus : ")
+vastaus3 = input("Mikä on yhden henkilön CO2-päästöt lentomatkalla Tokiosta Dubliniin? A) 1336.5kg B) 1335.6kg B) 1563.3kg : ")
 if vastaus3.upper() == "B":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
-    print("Vastasit väärin, oikea vastaus on b) 1335.6kg.")
+    print("Vastasit väärin, oikea vastaus on B) 1335.6kg.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -289,7 +300,7 @@ current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #usan kysymys
-vastaus4 = input("Kuinka paljon hiilidioksidia syntyy yhdestä kilosta kerosiinia polttaessa? a) 3.16kg b) 0.54kg c) 2.7kg : ")
+vastaus4 = input("Kuinka paljon hiilidioksidia syntyy yhdestä kilosta kerosiinia polttaessa? A) 3.16kg B) 0.54kg C) 2.7kg : ")
 if vastaus4.upper() == "A":
     print("Vastasit oikein.")
     budget += 500
@@ -329,13 +340,13 @@ current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # Kanadan kysymys
-vastaus5 = input("Paljonko merenpinnan ennustetaan nousevan 2100-luvulle mennessä? a) 5km b) 1-1,5m c) 60-80cm : ")
+vastaus5 = input("Paljonko merenpinnan ennustetaan nousevan 2100-luvulle mennessä? A) 5km B) 1-1,5m C) 60-80cm : ")
 if vastaus5.upper() == "C":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
-    print("Vastasit väärin, oikea vastaus on c) 60-80cm.")
+    print("Vastasit väärin, oikea vastaus on C) 60-80cm.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -369,12 +380,12 @@ current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # Grönlannin kysymys
-vastaus6 = input("kysymys : ")
-if vastaus6.upper() == "?":
+vastaus6 = input("Kuinka monen (prosentin) eurooppalaisen koti uhkaa jäädä merenpinnan alle 2100-luvulle mennessä? A) 5% B) 15% C) 30% : ")
+if vastaus6.upper() == "C":
     print("Vastasit oikein.")
     win = True
 else:
-    print("Vastasit väärin, oikea vastaus on ???.")
+    print("Vastasit väärin, oikea vastaus on C) 30%.")
 
 # show game result
 print(f'''{f'Voitit pelin :) Lopullinen bubjettisi on {budget}' if win else f'Hävisit pelin :( Budjettisi on {budget}'}''')
