@@ -106,7 +106,7 @@ game_id = create_game(start_airport, player, all_airports)
 while not game_over:
     # get current airport info
     airport = get_airport_info(current_airport)
-    # show game status
+    # show current airport
     print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
     # pause
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
@@ -142,7 +142,7 @@ while not game_over:
 #_______________________________________________________
 # tästä alkaa euroopan jälkeinen osio
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
-# turkey
+# turkki
 def get_airport1():
     sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
         FROM country
@@ -154,9 +154,7 @@ def get_airport1():
     result = cursor.fetchall()
     return result
 
-# get current airport info
 airport = get_airport_info(current_airport)
-# show game status
 print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
 #turkin lentokenttä
@@ -174,8 +172,8 @@ current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #turkin kysymys
-vastaus1 = input('''Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa : ''')
-if vastaus1 == 'a' or 'A':
+vastaus1 = input("Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa : ")
+if vastaus1.upper() == "A":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
@@ -184,9 +182,7 @@ else:
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
-#________________________________________________
 # Afganistan
-
 def get_airport2():
     sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
         FROM country
@@ -199,7 +195,6 @@ def get_airport2():
     return result
 
 airport = get_airport_info(current_airport)
-
 print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
 # turkista afganistaniin
@@ -218,7 +213,7 @@ input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # afganistanin kysymys
 vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? a) 15% b) 0,5-1% c) 2-3% : ")
-if vastaus2 == 'c' or 'C':
+if vastaus2.upper() == "C":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}.")
@@ -227,7 +222,7 @@ else:
     print(f'Tämän hetkinen budjettisi on {budget}.')
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
-# Japan
+# Japani
 def get_airport3():
     sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
         FROM country
@@ -240,10 +235,8 @@ def get_airport3():
     return result
 
 airport = get_airport_info(current_airport)
-# show game status
 print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
-#japani
 airports = get_airport3()
 print(f'''Seuraava kohteesi on: ''')
 for airport in airports:
@@ -258,7 +251,7 @@ input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #japanin kysymys
 vastaus3 = input("Mikä on yhden henkilön CO2-päästöt lentomatkalla Tokiosta Dubliniin? a) 1336.5kg b) 1335.6kg c) 1563.3kg vastaus : ")
-if vastaus3 == 'b' or 'B':
+if vastaus3.upper() == "B":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
@@ -280,7 +273,6 @@ def get_airport4():
     return result
 
 airport = get_airport_info(current_airport)
-# show game status
 print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
 airports = get_airport4()
@@ -298,7 +290,7 @@ input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #usan kysymys
 vastaus4 = input("Kuinka paljon hiilidioksidia syntyy yhdestä kilosta kerosiinia polttaessa? a) 3.16kg b) 0.54kg c) 2.7kg : ")
-if vastaus4 == 'a' or 'A':
+if vastaus4.upper() == "A":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
@@ -306,8 +298,8 @@ else:
     print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
-# __________________________________________________________________________________________________________________________________________
-# Canada
+
+# Kanada
 
 def get_airport5():
     sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
@@ -334,25 +326,55 @@ dest = airport['ident']
 selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
-input('\033[32mPainaEnter jatkaaksesi...\033[0m')
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # Kanadan kysymys
 vastaus5 = input("Paljonko merenpinnan ennustetaan nousevan 2100-luvulle mennessä? a) 5km b) 1-1,5m c) 60-80cm : ")
-if vastaus5 == 'c' or 'C':
+if vastaus5.upper() == "C":
     print("Vastasit oikein.")
     budget += 500
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
     print("Vastasit väärin, oikea vastaus on c) 60-80cm.")
     print(f"Tämän hetkinen budjettisi on {budget}.")
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 #___________________________________________________________________
 
-#formerly in the game loop (eu part), removed since u can't win in the europe part of the game
-if win:
-    print(f'''You won!''')
-    game_over = True
+# Grönlanti
+def get_airport6():
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'BGJN'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
 
-# if game is over loop stops
+airport = get_airport_info(current_airport)
+print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
+
+airports = get_airport6()
+print(f'''Seuraava kohteesi on: ''')
+for airport in airports:
+    ap_distance = calculate_distance(current_airport, airport['ident'])
+    print(f'''{airport['airportName']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
+dest = airport['ident']
+
+selected_distance = calculate_distance(current_airport, dest)
+update_location(dest, game_id)
+current_airport = dest
+input('\033[32mPaina Enter jatkaaksesi...\033[0m')
+
+# Grönlannin kysymys
+vastaus6 = input("kysymys : ")
+if vastaus6.upper() == "?":
+    print("Vastasit oikein.")
+    win = True
+else:
+    print("Vastasit väärin, oikea vastaus on ???.")
+
 # show game result
-print(f'''{'You won!' if win else 'You lost!'}''')
+print(f'''{f'Voitit pelin :) Lopullinen bubjettisi on {budget}' if win else f'Hävisit pelin :( Budjettisi on {budget}'}''')
