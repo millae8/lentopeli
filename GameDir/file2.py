@@ -7,6 +7,26 @@
 # sain tehtyy sql joka näyttää maan nimi lentokentän tietojen mukaan, 
 # mutta jossain puuttuu se, että maan nimi näkyy, koska se herjaa mulla, kun yritän saada maan nimi näkymään pelissä.
 # maan nimi näkyy nyt
+___________________________________________________________________________________--
+# tässä hätälasku kohta
+
+maa_list = ['Turkki', 'Afganistan', 'Japani', 'Yhdysvallat', 'Canada']
+
+hatalasku_reason = ['lämpötila alle - 20', 'clear skys', 'lämpötila yli +25C',
+                    'lämpotila alle 0C', 'säätila on tuulinen',
+                    'Säätila on pilvinen', 'clear skys']
+
+#def country_hatalasku():
+for i in range(1):
+    maa = random.choice(maa_list)
+    reason_hatalasku = random.choice(hatalasku_reason)
+    happening = maa.capitalize() +'ssa' + ' ' + reason_hatalasku.lower()
+if reason_hatalasku == 'clear skys':
+    print('')
+else:
+    print(f" {happening}, nyt tulee hätälasku!") # en tiiä kirjoitinko tän oikein
+
+_______________________________________________________________________________________________
 
 # FOR DATABASE TABLE "task"
 '''
@@ -53,23 +73,6 @@ print(place)
 for i in get_airports():
     print(i)
 
-# tässä hätälasku kohta
-
-maa_list = ['Turkki', 'Afganistan', 'Japani', 'Yhdysvallat', 'Canada']
-
-hatalasku_reason = ['lämpötila alle - 20', 'clear skys', 'lämpötila yli +25C',
-                    'lämpotila alle 0C', 'säätila on tuulinen',
-                    'Säätila on pilvinen', 'clear skys']
-
-#def country_hatalasku():
-for i in range(1):
-    maa = random.choice(maa_list)
-    reason_hatalasku = random.choice(hatalasku_reason)
-    happening = maa.capitalize() +'ssa' + ' ' + reason_hatalasku.lower()
-if reason_hatalasku == 'clear skys':
-    print('')
-else:
-    print(f" {happening}, nyt tulee hätälasku!") # en tiiä kirjoitinko tän oikein
 
 
 _______________________________________________________________________________________________________________________________________________-
