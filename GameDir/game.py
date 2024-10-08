@@ -155,6 +155,9 @@ while not game_over:
     update_location(dest, game_id)
     current_airport = dest
 
+airport = get_airport_info(current_airport)
+print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
+
     question, correct_answer, display_answer = get_question()
     answer = input(f"{question}: ")
     if answer == correct_answer:
