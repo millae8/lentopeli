@@ -102,6 +102,8 @@ def country_hatalasku(maa):
 
 # GAME SETTINGS
 
+print('Lähdet Helsingistä lentämään eri Euroopan maihin. Tehtäväsi on vastata oikein tarpeeksi moneen kysymykseen,'
+      '\njotta saat leimoja passiisi ja voit lähteä Euroopasta eteenpäin kohti Grönlantia.\n')
 print('Kun olet valmis aloittamaan, ')
 player = input('kirjoita pelaajan nimi: ')
 # boolean for game over and win
