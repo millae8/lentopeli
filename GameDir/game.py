@@ -208,6 +208,7 @@ if vastaus1.upper() == "A":
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
     print("Vastasit väärin, oikea vastaus on A) Ei vaikuta.")
+    budget = budget * 0.90
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -250,6 +251,7 @@ if vastaus2.upper() == "C":
     print(f"Tämän hetkinen budjettisi on {budget}.")
 else:
     print("Vastasit väärin, oikea vastaus on C) 2-3%.")
+    budget = budget * 0.90
     print(f'Tämän hetkinen budjettisi on {budget}.')
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -290,6 +292,7 @@ if vastaus3.upper() == "B":
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
     print("Vastasit väärin, oikea vastaus on B) 1335.6kg.")
+    budget = budget * 0.90
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -331,6 +334,7 @@ if vastaus4.upper() == "A":
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
     print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
+    budget = budget * 0.90
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -373,6 +377,7 @@ if vastaus5.upper() == "C":
     print(f"Tämän hetkinen budjettisi on {budget}")
 else:
     print("Vastasit väärin, oikea vastaus on C) 60-80cm.")
+    budget = budget * 0.90
     print(f"Tämän hetkinen budjettisi on {budget}.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
