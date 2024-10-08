@@ -7,7 +7,7 @@
 # sain tehtyy sql joka näyttää maan nimi lentokentän tietojen mukaan, 
 # mutta jossain puuttuu se, että maan nimi näkyy, koska se herjaa mulla, kun yritän saada maan nimi näkymään pelissä.
 # maan nimi näkyy nyt
-___________________________________________________________________________________--
+#___________________________________________________________________________________
 # tässä hätälasku kohta
 
 maa_list = ['Turkki', 'Afganistan', 'Japani', 'Yhdysvallat', 'Canada']
@@ -26,10 +26,10 @@ if reason_hatalasku == 'clear skys':
 else:
     print(f" {happening}, nyt tulee hätälasku!") # en tiiä kirjoitinko tän oikein
 
-_______________________________________________________________________________________________
+#_______________________________________________________________________________________________
 
 # FOR DATABASE TABLE "task"
-'''
+
 create table task(
 id int not null auto_increment,
 question varchar (40),
@@ -37,7 +37,7 @@ display_answer varchar (40),
 correct_answer varchar (40),
 primary key(id)
 );
-'''
+
 
 # hakee kysymyksiä randomisti 1 kpl
 def get_question():
@@ -55,7 +55,7 @@ kysymys, oikea_vastaus = get_question()
 vastaus = input(f'{kysymys}: ')
 print(f'vastasit {vastaus}')
 print(f'Oikea vastaus on {oikea_vastaus}')
-____________________________________________________________
+#____________________________________________________________
 
 # arpoo 3 lentokenttää euroopassa (for now monikko muotona) en oo varma tästä koodista
 def get_airplane():
@@ -75,12 +75,12 @@ for i in get_airports():
 
 
 
-_______________________________________________________________________________________________________________________________________________-
+#_______________________________________________________________________________________________________________________________________________-
 
 
 # testasin peliä ja tässä on miltä se koko homma toimi (kun kaikki on vastattu oikein ja päästöjä ei ole kulunu yhtään)
 
-Kun olet valmis aloittamaan, 
+"""Kun olet valmis aloittamaan, 
 kirjoita pelaajan nimi: don
 Olet kohteessa Helsinki Vantaa Airport, Finland.
 Paina Enter jatkaaksesi...
@@ -162,5 +162,4 @@ Ilulissat Airport, Greenland, matkan pituus: 4332km
 Paina Enter jatkaaksesi...
 Kuinka monen (prosentin) eurooppalaisen koti uhkaa jäädä merenpinnan alle 2100-luvulle mennessä? A) 5% B) 15% C) 30% : c
 Vastasit oikein.
-Voitit pelin :) Lopullinen bubjettisi on 8500
-
+Voitit pelin :) Lopullinen bubjettisi on 8500"""

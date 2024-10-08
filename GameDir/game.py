@@ -1,5 +1,6 @@
 from geopy import distance
 import mysql.connector
+import random
 
 conn = mysql.connector.connect(
     host='localhost',
@@ -82,6 +83,20 @@ def get_question():
     result_row = cursor.fetchone()
     # palauttaa monikon, paitsi jos tyhjä tulosjoukko -> tulostaa None
     return result_row
+
+# hätälaskut
+hatalasku_reason = ['lämpötila alle - 20', 'clear sky', 'lämpötila yli +25C',
+                    'lämpotila alle 0C', 'säätila on tuulinen',
+                    'Säätila on pilvinen', 'clear sky']
+
+def country_hatalasku(maa):
+    for i in range(1):
+        reason_hatalasku = random.choice(hatalasku_reason)
+        happening =maa+'ssa' + ' ' + reason_hatalasku.lower()
+    if reason_hatalasku == 'clear sky':
+        print('')
+    else:
+        print(f" {happening}, nyt tulee hätälasku!")
 
 # game starts
 
@@ -182,6 +197,9 @@ current_airport = dest
 #pause
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
+#hätälasku check
+country_hatalasku("Turki")
+
 #turkin kysymys
 vastaus1 = input("Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vaikuttaa : ")
 if vastaus1.upper() == "A":
@@ -222,6 +240,8 @@ update_location(dest, game_id)
 current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
+country_hatalasku("Afganistani")
+
 # afganistanin kysymys
 vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennoista? A) 15% B) 0,5-1% C) 2-3% : ")
 if vastaus2.upper() == "C":
@@ -260,8 +280,10 @@ update_location(dest, game_id)
 current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
+country_hatalasku("Japani")
+
 #japanin kysymys
-vastaus3 = input("Mikä on yhden henkilön CO2-päästöt lentomatkalla Tokiosta Dubliniin? A) 1336.5kg B) 1335.6kg B) 1563.3kg : ")
+vastaus3 = input("Mikä on yhden henkilön CO2-päästöt lentomatkalla Tokiosta Dubliniin? A) 1336.5kg B) 1335.6kg C) 1563.3kg : ")
 if vastaus3.upper() == "B":
     print("Vastasit oikein.")
     budget += 500
@@ -298,6 +320,8 @@ selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
+
+country_hatalasku("Yhdysvalloi")
 
 #usan kysymys
 vastaus4 = input("Kuinka paljon hiilidioksidia syntyy yhdestä kilosta kerosiinia polttaessa? A) 3.16kg B) 0.54kg C) 2.7kg : ")
@@ -338,6 +362,8 @@ selected_distance = calculate_distance(current_airport, dest)
 update_location(dest, game_id)
 current_airport = dest
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
+
+country_hatalasku("Kanada")
 
 # Kanadan kysymys
 vastaus5 = input("Paljonko merenpinnan ennustetaan nousevan 2100-luvulle mennessä? A) 5km B) 1-1,5m C) 60-80cm : ")
