@@ -7,7 +7,7 @@ conn = mysql.connector.connect(
     port=3306,
     database='base',
     user='name',
-    password='secret',
+    password='?',
     autocommit=True,
     charset='utf8mb4',
     collation='utf8mb4_unicode_ci'
@@ -162,7 +162,7 @@ while not game_over:
     budget = budget - paastot()
 
     airport = get_airport_info(current_airport)
-    print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
+    print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}. Tämän hetkinen päästö budjettisi on {budget}''')
 
     question, correct_answer, display_answer = get_question()
     answer = input(f"{question}: ")
