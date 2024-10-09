@@ -7,7 +7,7 @@ conn = mysql.connector.connect(
     port=3306,
     database='base',
     user='name',
-    password='?',
+    password='123',
     autocommit=True,
     charset='utf8mb4',
     collation='utf8mb4_unicode_ci'
@@ -99,8 +99,13 @@ def country_hatalasku(maa):
         print(f" {happening}, nyt tulee hätälasku!")
 
 # päästöt
+# budjetti laskentaan
 def paastot():
     result = 2.4 * selected_distance + 228
+    return result
+# lentokentille
+def paastot2():
+    result = 2.4 * ap_distance + 228
     return result
 
 # game starts
@@ -138,7 +143,8 @@ while not game_over:
     print(f'''Lentokentät: ''')
     for airport in airports:
         ap_distance = calculate_distance(current_airport, airport['ident'])
-        print(f'''{airport['airportName']}, icao: {airport['ident']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km''')
+        kulut = paastot2()
+        print(f'''{airport['airportName']}, icao: {airport['ident']}, {airport['countryName']}, matkan pituus: {ap_distance:.0f}km, matkan päästöt {kulut:.0f}kg''')
     # ask for destination
     dest = input('Kirjoita määränpään icao: ')
     if dest in country_list:
@@ -161,8 +167,11 @@ while not game_over:
     current_airport = dest
     budget = budget - paastot()
 
+    #if budget <= 0:
+    #   game_over = True
+
     airport = get_airport_info(current_airport)
-    print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}. Tämän hetkinen päästö budjettisi on {budget}''')
+    print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}. Tämän hetkinen päästö budjettisi on {budget:.0f}kg''')
 
     question, correct_answer, display_answer = get_question()
     answer = input(f"{question}: ")
@@ -179,6 +188,7 @@ while not game_over:
 #_______________________________________________________
 # tästä alkaa euroopan jälkeinen osio
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
+
 # turkki
 def get_airport1():
     sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
@@ -216,11 +226,11 @@ vastaus1 = input("Vaikuttaako lentäminen otsonikerrokseen? A) Ei vaikuta B) Vai
 if vastaus1.upper() == "A":
     print("Vastasit oikein.")
     budget += 500
-    print(f"Tämän hetkinen budjettisi on {budget}")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg")
 else:
     print("Vastasit väärin, oikea vastaus on A) Ei vaikuta.")
     budget = budget * 0.90
-    print(f"Tämän hetkinen budjettisi on {budget}.")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # Afganistan
@@ -259,11 +269,11 @@ vastaus2 = input("Kuinka monta prosenttia maailman päästöistä syntyy lennois
 if vastaus2.upper() == "C":
     print("Vastasit oikein.")
     budget += 500
-    print(f"Tämän hetkinen budjettisi on {budget}.")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
 else:
     print("Vastasit väärin, oikea vastaus on C) 2-3%.")
     budget = budget * 0.90
-    print(f'Tämän hetkinen budjettisi on {budget}.')
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # Japani
@@ -300,11 +310,11 @@ vastaus3 = input("Mikä on yhden henkilön CO2-päästöt lentomatkalla Tokiosta
 if vastaus3.upper() == "B":
     print("Vastasit oikein.")
     budget += 500
-    print(f"Tämän hetkinen budjettisi on {budget}")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg")
 else:
     print("Vastasit väärin, oikea vastaus on B) 1335.6kg.")
     budget = budget * 0.90
-    print(f"Tämän hetkinen budjettisi on {budget}.")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # yhdysvallat
@@ -342,11 +352,11 @@ vastaus4 = input("Kuinka paljon hiilidioksidia syntyy yhdestä kilosta kerosiini
 if vastaus4.upper() == "A":
     print("Vastasit oikein.")
     budget += 500
-    print(f"Tämän hetkinen budjettisi on {budget}")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg")
 else:
     print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
     budget = budget * 0.90
-    print(f"Tämän hetkinen budjettisi on {budget}.")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
 # Kanada
@@ -385,14 +395,12 @@ vastaus5 = input("Paljonko merenpinnan ennustetaan nousevan 2100-luvulle menness
 if vastaus5.upper() == "C":
     print("Vastasit oikein.")
     budget += 500
-    print(f"Tämän hetkinen budjettisi on {budget}")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg")
 else:
     print("Vastasit väärin, oikea vastaus on C) 60-80cm.")
     budget = budget * 0.90
-    print(f"Tämän hetkinen budjettisi on {budget}.")
+    print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
 input('\033[32mPaina Enter jatkaaksesi...\033[0m')
-
-#___________________________________________________________________
 
 # Grönlanti
 def get_airport6():
@@ -430,4 +438,4 @@ else:
     print("Vastasit väärin, oikea vastaus on C) 30%.")
 
 # show game result
-print(f'''{f'Voitit pelin :) Lopullinen bubjettisi on {budget}' if win else f'Hävisit pelin :( Budjettisi on {budget}'}''')
+print(f'''{f'Voitit pelin :) Lopullinen bubjettisi on {budget:.0f}kg' if win else f'Hävisit pelin :( Budjettisi on {budget:.0f}kg'}''')
