@@ -7,7 +7,7 @@ conn = mysql.connector.connect(
     port=3306,
     database='base',
     user='name',
-    password='???',
+    password='word',
     autocommit=True,
     charset='utf8mb4',
     collation='utf8mb4_unicode_ci'
@@ -39,11 +39,10 @@ def get_airports_start():
         WHERE airport.ident = 'EFHK'"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
-    result = cursor.fetchall() # pitääkö tässä olla fetchone fetchall:n tilalle? #keep as is
+    result = cursor.fetchall()
     return result
 
 # create new game
-# #vaihdoin info:t game:n ku en saanut muuten toimimaan mut jos muilla toimii saa vaihtaa takasin
 def create_game(cur_airport, p_name, a_ports):
     sql = "INSERT INTO game (location, screen_name) VALUES (%s, %s);"
     cursor = conn.cursor(dictionary=True)
@@ -458,6 +457,7 @@ while not game_over:
         win = True
     else:
         print("Vastasit väärin, oikea vastaus on C) 30%.")
+    break
 
-    # show game result
-    print(f'''{f'Voitit pelin :) Lopullinen bubjettisi on {budget:.0f}kg' if win else f'Hävisit pelin :( Budjettisi on {budget:.0f}kg'}''')
+# show game result
+print(f'''{f'Voitit pelin :) Lopullinen bubjettisi on {budget:.0f}kg' if win else f'Hävisit pelin :( Budjettisi on {budget:.0f}kg'}''')

@@ -1,5 +1,5 @@
 # testing zone or something idk lol
-# muistiinpanot ?
+# muistiinpanot
 
 # turkki - ankara (LTAC), afganistan - kabul (OAKB), japani - tokyo (RJAA)
 # yhdysvallat - seattle (KBFI), kanada - vancouver (CYVR), grönlanti - ilulissat (BGJN)
