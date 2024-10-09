@@ -98,6 +98,11 @@ def country_hatalasku(maa):
     else:
         print(f" {happening}, nyt tulee hätälasku!")
 
+# päästöt
+def paastot():
+    result = 2.4 * selected_distance + 228
+    return result
+
 # game starts
 
 # GAME SETTINGS
@@ -154,9 +159,10 @@ while not game_over:
     selected_distance = calculate_distance(current_airport, dest)
     update_location(dest, game_id)
     current_airport = dest
+    budget = budget - paastot()
 
-airport = get_airport_info(current_airport)
-print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
+    airport = get_airport_info(current_airport)
+    print(f'''Olet kohteessa {airport['airportName']}, {airport['countryName']}.''')
 
     question, correct_answer, display_answer = get_question()
     answer = input(f"{question}: ")
