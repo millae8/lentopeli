@@ -7,7 +7,7 @@ conn = mysql.connector.connect(
     port=3306,
     database='base',
     user='name',
-    password='123',
+    password='???',
     autocommit=True,
     charset='utf8mb4',
     collation='utf8mb4_unicode_ci'
@@ -122,7 +122,7 @@ win = False
 
 max_stamp = 3
 stamp = 0
-budget = 6000
+budget = 8000
 country_list = []
 all_airports = get_airports_start()
 start_airport = all_airports[0]['ident']
@@ -279,6 +279,10 @@ while not game_over:
     else:
         print("Vastasit väärin, oikea vastaus on C) 2-3%.")
         budget = budget * 0.90
+        if budget <= 0:
+            game_over = True
+            print("Budjettisi on loppu, hävisit pelin :(")
+            break
         print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -320,6 +324,10 @@ while not game_over:
     else:
         print("Vastasit väärin, oikea vastaus on B) 1335.6kg.")
         budget = budget * 0.90
+        if budget <= 0:
+            game_over = True
+            print("Budjettisi on loppu, hävisit pelin :(")
+            break
         print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -362,6 +370,10 @@ while not game_over:
     else:
         print("Vastasit väärin, oikea vastaus on a) 3.16kg.")
         budget = budget * 0.90
+        if budget <= 0:
+            game_over = True
+            print("Budjettisi on loppu, hävisit pelin :(")
+            break
         print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
@@ -405,6 +417,10 @@ while not game_over:
     else:
         print("Vastasit väärin, oikea vastaus on C) 60-80cm.")
         budget = budget * 0.90
+        if budget <= 0:
+            game_over = True
+            print("Budjettisi on loppu, hävisit pelin :(")
+            break
         print(f"Tämän hetkinen budjettisi on {budget:.0f}kg.")
     input('\033[32mPaina Enter jatkaaksesi...\033[0m')
 
