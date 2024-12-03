@@ -22,16 +22,30 @@ document.querySelector('player-name').addEventListener('submit', function(event)
 
 /*
 async function getData(url) {
-  const response = await
+  const response = await fetch(url);
+  if ( !response.ok) {
+  throw new Error('Invalid server input');
+  const data = await response.json();
+  return data;
 }
-
  */
 
+// game status update, (mitä tänne tarvitaan vielä?)
+function uppdateStatus(status) {
+  document.querySelector('#buget').innerHTML = status.co2.budget;
 
-//////// game status update (mitä edes tarvitaan budjetin lisäksi?)
-function updateStatus(status) {
-  document.querySelector('budget').innerHTML = status.co2.budget;
 }
+
+// function to show kysymykset?
+function getQuestions(airport) {
+  document.querySelector('#qustion').innerHTML = ;
+  document.querySelector('#option-1').innerHTML = ;
+  document.querySelector('#option-2').innerHTML = ;
+  document.querySelector('#option-3').innerHTML = ;
+
+}
+
+
 
 
 
