@@ -13,6 +13,34 @@ const airportMarkers = L.featureGroup().addTo(map);
 const blueIcon = L.divIcon({ className: 'blue-icon' });
 const greenIcon = L.divIcon({ className: 'green-icon '});
 
-// from for player player name
+// from for player name
+document.querySelector('player-name').addEventListener('submit', function(event){
+  event.preventDefault();
+  const playerName = document.querySelector('player-name').value;
+});
+
+/*
+async function getData(url) {
+  const response = await
+}
+
+ */
+
+
+//////// game status update (mitä edes tarvitaan budjetin lisäksi?)
+function updateStatus(status) {
+  document.querySelector('budget').innerHTML = status.co2.budget;
+}
+
+
+
+
+/* check if game is over
+function checkGameStatus(budget) {
+  if budget
+}
+
+ */
+
 
 
