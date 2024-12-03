@@ -19,10 +19,17 @@ document.querySelector('player-name').addEventListener('submit', function(event)
   const playerName = document.querySelector('player-name').value;
 });
 
+/*
+async function getData(url) {
+  const response = await
+}
+
+ */
+
+
 //////// game status update (mitä edes tarvitaan budjetin lisäksi?)
 function updateStatus(status) {
   document.querySelector('budget').innerHTML = status.co2.budget;
-
 }
 
 
