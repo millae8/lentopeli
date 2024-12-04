@@ -65,6 +65,17 @@ function checkGameStatus(budget) {
 }
 
  */
+// function to fetch data from API
+async function getData(url) {
+  const response = await fetch(url);
+  const data = response.json();
+  console.log(data)
+}
 
+async function mainGame() {
+  const response = await fetch('http://127.0.0.1:3000/');
+  const gamedata = response.json();
+  console.log(gamedata)
+}
 
-
+mainGame()
