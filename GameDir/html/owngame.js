@@ -1,10 +1,22 @@
 'use strict'
 
 // map
+/* 1. show map using Leaflet library. (L comes from the Leaflet library) */
+
+const map = L.map('map', { tap: false });
+L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+  maxZoom: 20,
+  subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+}).addTo(map);
+map.setView([60, 24], 7);
+
+/*
 const map = L.map('map').setView([60.23, 24.74], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
+
+ */
 
 const apiUrl = 'http://127.0.0.1:3000/';
 const startLocation = 'EFHK';
@@ -38,10 +50,7 @@ function uppdateStatus(status) {
 
 // function to show kysymykset?
 function getQuestions(airport) {
-  document.querySelector('#qustion').innerHTML = ;
-  document.querySelector('#option-1').innerHTML = ;
-  document.querySelector('#option-2').innerHTML = ;
-  document.querySelector('#option-3').innerHTML = ;
+  document.querySelector('#question').innerHTML = '' ;
 
 }
 

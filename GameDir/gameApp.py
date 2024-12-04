@@ -2,6 +2,9 @@ import mysql.connector
 import json
 from flask import Flask
 from flask_cors import CORS
+import random
+import geopy
+
 
 # ??????????????????????????
 
@@ -16,13 +19,12 @@ conn = mysql.connector.connect(
     collation='utf8mb4_unicode_ci'
 )
 
-
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/airports/<country>')
-def airports_by_country(country):
+@app.route('/airports/')
+def get_airport():
     sql = f'''SELECT country.name AS countryName, airport.iso_country, airport.ident, airport.name AS airportName, airport.latitude_deg, airport.longitude_deg, airport.type
         FROM country
         LEFT JOIN airport
@@ -36,6 +38,13 @@ def airports_by_country(country):
     result = cursor.fetchall()
     return json.dumps(result)
 
+@app.route('/api/get_question')
+def get_question():
+    sql = """select question,correct_answer,display_answer from task order by rand() limit 1;"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    return json.dumps(result)
 
 '''
 @app.route('/newgame')
