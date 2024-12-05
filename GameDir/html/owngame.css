@@ -32,8 +32,8 @@
     padding: 10px;
     margin: 10px;
     text-align: center;
-    display: inline-flex;
-    float: right;
+    display: block;
+    position: absolute;
 }
 
 .kartta {
@@ -47,8 +47,8 @@
 }
 
 .stat {
-    width: 30%;
-    height: 100%;
+    width: 40%;
+    height: 10%;
     padding: 10px;
     margin: 10px;
     text-align: center;
