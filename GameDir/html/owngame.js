@@ -26,10 +26,15 @@ const airportMarkers = L.featureGroup().addTo(map);
 const blueIcon = L.divIcon({ className: 'blue-icon' });
 const greenIcon = L.divIcon({ className: 'green-icon '});
 
+const nimi = document.querySelector('#player-form');
+console.log(nimi);
+
 // from for player name
-document.querySelector('player-name').addEventListener('submit', function(event){
+document.querySelector('#player-form').addEventListener('submit', function (event){
   event.preventDefault();
-  const playerName = document.querySelector('player-name').value;
+  const playerName = document.querySelector('#player-input').value;
+  console.log(playerName);
+  mainGame(nimi);
 });
 
 /*
@@ -64,18 +69,36 @@ function checkGameStatus(budget) {
   if budget
 }
 
- */
+
 // function to fetch data from API
 async function getData(url) {
   const response = await fetch(url);
   const data = response.json();
   console.log(data)
+
+ */
+
+
+async function mainGame(nimi) {
+  const response = await fetch('http://127.0.0.1:3000/airports/');
+  const gamedata = await response.json();
+  console.log(gamedata);
+  airportMarkers.clearLayers();
+  // add marker
+  for (const location of gamedata) {
+    console.log(location.latitude_deg);
+    console.log(location.longitude_deg);
+    const marker = L.marker([location.latitude_deg, location.longitude_deg]).
+      addTo(map).
+      bindPopup('moimoimoi').
+        setIcon(blueIcon).
+      openPopup();
+    airportMarkers.addLayer(marker);
+  }
+
+  // pan map to selected airport
+  map.flyTo([airport.latitude_deg, airport.longitude_deg]);
 }
 
-async function mainGame() {
-  const response = await fetch('http://127.0.0.1:3000/');
-  const gamedata = response.json();
-  console.log(gamedata)
-}
 
-mainGame()
+
