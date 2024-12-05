@@ -17,6 +17,15 @@
     margin: 10px;
 }
 
+.leimat {
+    display: inline-table;
+    width: 10%;
+    height: 10%;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+}
+
 .kysymysbox {
     width: 40%;
     height: 75%;
