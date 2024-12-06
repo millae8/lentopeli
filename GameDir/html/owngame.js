@@ -96,9 +96,7 @@ async function mainGame(playerName) {
     airportMarkers.addLayer(marker);
   }
 
-  // pan map to selected airport
- // map.flyTo([location.latitude_deg, location.longitude_deg]);
-}
+
 */
 
 function helsinkiVantaa(){
