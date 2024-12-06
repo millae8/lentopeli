@@ -26,15 +26,16 @@ const airportMarkers = L.featureGroup().addTo(map);
 const blueIcon = L.divIcon({ className: 'blue-icon' });
 const greenIcon = L.divIcon({ className: 'green-icon '});
 
-const nimi = document.querySelector('#player-form');
-console.log(nimi);
+//const nimi = document.querySelector('#player-form');
+//console.log(nimi);
 
 // from for player name
 document.querySelector('#player-form').addEventListener('submit', function (event){
   event.preventDefault();
   const playerName = document.querySelector('#player-input').value;
   console.log(playerName);
-  mainGame(nimi);
+  //mainGame(`${playerName}&loc=${startLocation}`);
+  mainGame(playerName);
 });
 
 /*
@@ -61,44 +62,67 @@ function getQuestions(airport) {
 
 
 
-
-
-
 /* check if game is over
 function checkGameStatus(budget) {
   if budget
 }
-
+*/
 
 // function to fetch data from API
 async function getData(url) {
   const response = await fetch(url);
-  const data = response.json();
-  console.log(data)
-
- */
-
-
-async function mainGame(nimi) {
+  const data = await response.json();
+  console.log(data);
+  return data
+}
+/*
+async function mainGame(playerName) {
   const response = await fetch('http://127.0.0.1:3000/airports/');
   const gamedata = await response.json();
   console.log(gamedata);
+
   airportMarkers.clearLayers();
+
   // add marker
   for (const location of gamedata) {
+    console.log(location.airportName)
     console.log(location.latitude_deg);
     console.log(location.longitude_deg);
     const marker = L.marker([location.latitude_deg, location.longitude_deg]).
       addTo(map).
-      bindPopup('moimoimoi').
+      bindPopup(`<b>${location.name}</b>`).
         setIcon(blueIcon).
-      openPopup();
+      //openPopup();
     airportMarkers.addLayer(marker);
   }
 
   // pan map to selected airport
-  map.flyTo([airport.latitude_deg, airport.longitude_deg]);
+ // map.flyTo([location.latitude_deg, location.longitude_deg]);
+}
+*/
+
+function helsinkiVantaa(){
+  const startingMarker = [60.3172, 24.9633];
+  const mark = L.marker(startingMarker)
+      .addTo(map)
+      .bindPopup(`Starting point: ${location.name}`)
+      .setIcon(greenIcon);
+  airportMarkers.addLayer(mark);
+
+}
+
+async function mainGame(){
+  const gameData = await getData('http://127.0.0.1:3000/airports/');
+  console.log(gameData);
+  for (const airport of gameData) {
+    const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map); // untill tänne it works
+
+
+
+
+  }
 }
 
 
 
+helsinkiVantaa();
