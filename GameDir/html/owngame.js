@@ -34,6 +34,7 @@ document.querySelector('#player-form').addEventListener('submit', function (even
   event.preventDefault();
   const playerName = document.querySelector('#player-input').value;
   console.log(playerName);
+  document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
   //mainGame(`${playerName}&loc=${startLocation}`);
   mainGame(playerName);
 });
@@ -48,10 +49,10 @@ async function getData(url) {
 }
  */
 
-// game status update, (mitä tänne tarvitaan vielä?)
+// game status update
 function uppdateStatus(status) {
   document.querySelector('#buget').innerHTML = status.co2.budget;
-
+  document.querySelector('#leimat').innerHTML = status.leimat;
 }
 
 // function to show kysymykset?
@@ -59,7 +60,6 @@ function getQuestions(airport) {
   document.querySelector('#question').innerHTML = '' ;
 
 }
-
 
 
 /* check if game is over
@@ -73,7 +73,7 @@ async function getData(url) {
   const response = await fetch(url);
   const data = await response.json();
   console.log(data);
-  return data
+  return data;
 }
 /*
 async function mainGame(playerName) {
@@ -96,7 +96,6 @@ async function mainGame(playerName) {
     airportMarkers.addLayer(marker);
   }
 
-
 */
 
 function helsinkiVantaa(){
@@ -108,12 +107,19 @@ function helsinkiVantaa(){
   airportMarkers.addLayer(mark);
 
 }
+helsinkiVantaa();
+
 
 async function mainGame(){
-  const gameData = await getData('http://127.0.0.1:3000/airports/');
-  console.log(gameData);
-  for (const airport of gameData) {
-    const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map); // untill tänne it works
+    const gameData = await getData('http://127.0.0.1:3000/airports/');
+    console.log(gameData);
+    for (const airport of gameData) {
+        const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map); // untill tänne it works
+        marker.bindPopup(`You are here: ${airport.airportName}`);
+        console.log(airport.airportName);
+        marker.openPopup();
+        // tässä supposed to be when you choose an airport to go to
+       // marker.setIcon(blueIcon);
 
 
 
@@ -121,6 +127,10 @@ async function mainGame(){
   }
 }
 
+async function gameQuestion() {
+    const questionData = await getData('http://127.0.0.1:3000/questions/');
+    //for (const question of questionData) {
 
+}
+gameQuestion();
 
-helsinkiVantaa();

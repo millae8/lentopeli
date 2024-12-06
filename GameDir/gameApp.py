@@ -5,7 +5,6 @@ from flask_cors import CORS
 import random
 import geopy
 
-
 # ??????????????????????????
 
 conn = mysql.connector.connect(
@@ -38,7 +37,7 @@ def get_airport():
     result = cursor.fetchall()
     return json.dumps(result)
 
-@app.route('/api/get_question')
+@app.route('/questions/')
 def get_question():
     sql = """select question,correct_answer,display_answer from task order by rand() limit 1;"""
     cursor = conn.cursor(dictionary=True)
