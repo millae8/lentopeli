@@ -129,12 +129,13 @@ async function mainGame(){
 
 async function gameQuestion() {
     const questionData = await getData('http://127.0.0.1:3000/questions/');
-    for (const question of questionData) { // tästä en ole varma vielä, ylä osa hakee ja näyttää kysymyksen consolissa, mutta ala-osa ei toimi vielä
-        document.getElementById('#kysymys'). innerHTML = question.question;
+     // tästä en ole varma vielä, ylä osa hakee ja näyttää kysymyksen consolissa, mutta ala-osa ei toimi vielä
+     // pitäs toimii ny?
+        document.getElementById('question'). innerHTML = questionData.question;
         document.getElementById('#option1'). innerHTML = answer;
         document.getElementById('#option2'). innerHTML = answer;
         document.getElementById('#option3'). innerHTML = answer;
-    }
+
 
 }
 gameQuestion();
