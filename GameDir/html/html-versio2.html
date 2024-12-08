@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="styleshees-versio2.css">
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" defer></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js" defer></script>
+    <script src="owngame.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+    <title>Lento Grönlantiin</title>
+
+</head>
+<body>
+
+    <div id=" container">
+
+            <main class="flex-wrap">
+                <div id="map">
+                </div>
+                <div class="boxes">
+                    <section class="box">
+                        <header>
+                            <h2>Peli Status</h2>
+                        </header>
+                        <table>
+                            <tr>
+                                <td>CO2 Budget: <span id="budget">9000</span>kg</td> - en oo varma miten tää päivitetään pelin mukaan
+                                <td>Leimat: <span id="leimat">0</span>kpl</td>
+                                </tr>
+                        </table>
+                    </section>
+                    <section class="box">
+                        <header>
+                            <h2>Kysymys</h2>
+                        </header>
+                        <table>
+                            <tr>
+                                <td> tänne tulee kysymys tietokannasta, en oo varma miten sitä pävitetään</td>
+                            </tr>
+                        </table>
+                        <ul id="question" class="flex-wrap"></ul>
+                                <form>
+                                    <input type ="radio" id="option1" name="options" value="option1">
+                                    <label for="option1">A</label><br>
+                                    <input type ="radio" id="option2" name="options" value="option2">
+                                    <label for="option2">B</label><br>
+                                    <input type ="radio" id="option3" name="options" value="option3">
+                                    <label for="option3">C</label><br><br>
+                                    <input type="submit" value="Ok">
+                                </form>
+                                <! tää ei tee viel mitään -->
+                    </section>
+                </div>
+            </main>
+    </div>
+
+    <div id="player-modal">
+        <form id="player-form">
+            <input id="player-input" type="text" placeholder="Player name" required>
+            <input type="submit" value="Start game">
+        </form>
+    </div>
+
+</body>
+
+</html>
