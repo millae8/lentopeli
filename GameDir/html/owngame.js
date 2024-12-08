@@ -34,8 +34,8 @@ document.querySelector('#player-form').addEventListener('submit', function (even
   event.preventDefault();
   const playerName = document.querySelector('#player-input').value;
   console.log(playerName);
-  document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
-  //mainGame(`${playerName}&loc=${startLocation}`);
+  //document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
+
   mainGame(playerName);
 });
 
@@ -133,9 +133,9 @@ async function gameQuestion() {
      // pitäs toimii ny?
     // öö miten nää option kohdat toimii, koska meillä on ne vaihtoehdot kysymyksen kanssa ... :|
         document.getElementById('question'). innerHTML = questionData.question;
-        document.getElementById('#option1'). innerHTML = questionData;
-        document.getElementById('#option2'). innerHTML = answer;
-        document.getElementById('#option3'). innerHTML = answer;
+        //document.getElementById('#option1'). innerHTML = questionData;
+        //document.getElementById('#option2'). innerHTML = answer;
+        //document.getElementById('#option3'). innerHTML = answer;
 
 
 }
