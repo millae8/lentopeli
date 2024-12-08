@@ -129,15 +129,26 @@ async function mainGame(){
 
 async function gameQuestion() {
     const questionData = await getData('http://127.0.0.1:3000/questions/');
-     // tästä en ole varma vielä, ylä osa hakee ja näyttää kysymyksen consolissa, mutta ala-osa ei toimi vielä
-     // pitäs toimii ny? siinä
         document.getElementById('question'). innerHTML = questionData.question;
-        document.getElementById('#option1'). innerHTML = questionData.;
-        document.getElementById('#option2'). innerHTML = answer;
-        document.getElementById('#option3'). innerHTML = answer;
-
-
+        document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
 }
+
+function correct_check(correct_answer) {
+  for (let x of document.getElementsByName('options')) {
+    if (x.checked) {
+      if (x.value == correct_answer) {
+        alert('Oikein!');
+      } else {
+        alert('Väärin :(')
+      }
+    }
+  }
+}
+
+document.getElementById('submit').addEventListener('click', async function (event) {
+  event.preventDefault()
+  const questionData = await getData('http://127.0.0.1:3000/questions/');
+  correct_check(questionData.correct_answer);
+});
+
 gameQuestion();
-
-
