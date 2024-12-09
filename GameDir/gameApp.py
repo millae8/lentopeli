@@ -22,6 +22,14 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+@app.route('/helsinkivantaa/')
+def helsinkivantaa():
+    sql = f'''select airport.name from airport where ident = 'EFHK';'''
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return json.dumps(result)
+
 @app.route('/airports/')
 def get_airport():
     sql = f'''SELECT country.name AS countryName, airport.iso_country, airport.ident, airport.name AS airportName, airport.latitude_deg, airport.longitude_deg, airport.type
@@ -44,6 +52,71 @@ def get_question():
     cursor.execute(sql)
     result = cursor.fetchone()
     return json.dumps(result)
+
+@app.route('/turkki/')
+def get_airport1():
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'LTAC'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+
+def get_airport2():
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'OAKB'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+@app.route('/japan/')
+def get_airport3():
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'RJAA'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+
+
+@app.route('/yhdysvallat/')
+def get_airport4():
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'KBFI'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
+
+
+@app.route('/canada/')
+def get_airport5():
+    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
+        FROM country
+        LEFT join airport
+        ON airport.iso_country = country.iso_country 
+        WHERE airport.ident = 'CYVR'"""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
 
 '''
 @app.route('/newgame')
