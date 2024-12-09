@@ -34,20 +34,12 @@ document.querySelector('#player-form').addEventListener('submit', function (even
   event.preventDefault();
   const playerName = document.querySelector('#player-input').value;
   console.log(playerName);
-  document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
+  //document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
   //mainGame(`${playerName}&loc=${startLocation}`);
   mainGame(playerName);
+
 });
 
-/*
-async function getData(url) {
-  const response = await fetch(url);
-  if ( !response.ok) {
-  throw new Error('Invalid server input');
-  const data = await response.json();
-  return data;
-}
- */
 
 // game status update
 function uppdateStatus(status) {
@@ -55,11 +47,6 @@ function uppdateStatus(status) {
   document.querySelector('#leimat').innerHTML = status.leimat;
 }
 
-// function to show kysymykset?
-function getQuestions(airport) {
-  document.querySelector('#question').innerHTML = '' ;
-
-}
 
 
 /* check if game is over
@@ -72,32 +59,10 @@ function checkGameStatus(budget) {
 async function getData(url) {
   const response = await fetch(url);
   const data = await response.json();
-  console.log(data);
   return data;
 }
-/*
-async function mainGame(playerName) {
-  const response = await fetch('http://127.0.0.1:3000/airports/');
-  const gamedata = await response.json();
-  console.log(gamedata);
 
-  airportMarkers.clearLayers();
-
-  // add marker
-  for (const location of gamedata) {
-    console.log(location.airportName)
-    console.log(location.latitude_deg);
-    console.log(location.longitude_deg);
-    const marker = L.marker([location.latitude_deg, location.longitude_deg]).
-      addTo(map).
-      bindPopup(`<b>${location.name}</b>`).
-        setIcon(blueIcon).
-      //openPopup();
-    airportMarkers.addLayer(marker);
-  }
-
-*/
-// tää functio ei toimi :((((
+// tää function ei toimi :((((
 function helsinkiVantaa(){
   const startingMarker = [60.3172, 24.9633];
   const mark = L.marker(startingMarker)
@@ -107,9 +72,43 @@ function helsinkiVantaa(){
   airportMarkers.addLayer(mark);
 
 }
-helsinkiVantaa();
 
 
+async function mainGame() {
+    try {
+        const gameData = await getData('http://127.0.0.1:3000/airports/');
+        console.log(gameData);
+
+        for (const airport of gameData) {
+            const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map); // untill tänne it works
+            ////////// tästä eteenpäin toimi
+            if (airport) {
+                marker.bindPopup(`You are here: ${airport.countryName} , ${airport.airportName}`);
+                marker.openPopup();
+               // marker.setIcon(blueIcon); tää ei toimiiiiiiiii
+            } else {
+                marker.setIcon(blueIcon);
+                const popupContent = document.createElement('div');
+                const box = document.createElement('box');
+                box.innerHTML = airport.airportName;
+                popupContent.append(box);
+                const goButton = document.createElement('button');
+                goButton.classList('button');
+                goButton.innerHTML = 'Go here';
+                popupContent.append(goButton);
+                const p = document.createElement('p');
+                p.innerHTML = `Distance x km`;
+                popupContent.append(p);
+                marker.bindPopup(popupContent);
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/*
 async function mainGame(){
     const gameData = await getData('http://127.0.0.1:3000/airports/');
     console.log(gameData);
@@ -120,23 +119,23 @@ async function mainGame(){
         marker.openPopup();
         // tässä supposed to be when you choose an airport to go to
        // marker.setIcon(blueIcon);
-
-
-
-
   }
 }
+
+ */
+
 
 async function gameQuestion() {
     const questionData = await getData('http://127.0.0.1:3000/questions/');
         document.getElementById('question'). innerHTML = questionData.question;
-        document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
+       // document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
 }
+
 
 function correct_check(correct_answer) {
   for (let x of document.getElementsByName('options')) {
     if (x.checked) {
-      if (x.value == correct_answer) {
+      if (x.value === correct_answer) {
         alert('Oikein!');
       } else {
         alert('Väärin :(')
@@ -151,4 +150,6 @@ document.getElementById('submit').addEventListener('click', async function (even
   correct_check(questionData.correct_answer);
 });
 
-gameQuestion();
+
+//helsinkiVantaa();
+//gameQuestion();
