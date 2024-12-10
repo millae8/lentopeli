@@ -24,7 +24,7 @@ const startLocation = 'EFHK';
 const startingMarker = [60.3172, 24.9633];
 const airportMarkers = L.featureGroup().addTo(map);
 let leimat = 0;
-const co2_budget = 9000;
+let co2_budget = 9000;
 let coranswer;
 
 
@@ -107,6 +107,7 @@ async function mainGame(location, name) {
             const h4 = document.createElement('h4');
             h4.innerHTML = airport.airportName;
             popupContent.append(h4);
+
             // button
             const goButton = document.createElement('button');
             goButton.classList.add('button');
@@ -118,19 +119,23 @@ async function mainGame(location, name) {
             marker.bindPopup(popupContent);
 
             goButton.addEventListener('click', () => {
+                co2_budget -= 500;
+                updateStatus(leimat);
                 map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
+                co2_budget;
+
                 marker.bindPopup(`You are here: <b>${airport.countryName} , ${airport.airportName}</b>`)
                     .openPopup();
                 document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
                 mainGame([airport.latitude_deg, airport.longitude_deg], airport.airportName);
-                document.querySelector('#kysymysbox').classList.remove('hide');
+
                 });
             }
         } catch (error) {
         console.log(error);
     }
     gameQuestion();
-    // kysymysboksi näkyviin
+    document.querySelector('#kysymysbox').classList.remove('hide');
 }
 
 async function gameQuestion() {
@@ -144,6 +149,7 @@ function correct_check(correct_answer) {
     if (x.checked) {
       if (x.value === correct_answer) {
         alert('Oikein! Saat leiman.');
+        document.querySelector('#kysymysbox').classList.add('hide');
         leimat++
         updateStatus();
       } else {
