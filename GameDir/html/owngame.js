@@ -25,6 +25,7 @@ const startingMarker = [60.3172, 24.9633];
 const airportMarkers = L.featureGroup().addTo(map);
 let leimat = 0;
 const co2_budget = 9000;
+let coranswer;
 
 
 // icons kartan kohdissa
@@ -80,8 +81,6 @@ function helsinkiVantaa(){
   document.querySelector('#kysymysbox').classList.add('hide');
 
 }
-helsinkiVantaa();
-updateStatus();
 
 async function mainGame(location, name) {
     try {
@@ -134,28 +133,10 @@ async function mainGame(location, name) {
     // kysymysboksi näkyviin
 }
 
-/*
-async function mainGame(){
-    const gameData = await getData('http://127.0.0.1:3000/airports/');
-    console.log(gameData);
-    for (const airport of gameData) {
-        const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map); // untill tänne it works
-        marker.bindPopup(`You are here: ${airport.airportName}`);
-        console.log(airport.airportName);
-        marker.openPopup();
-        // tässä supposed to be when you choose an airport to go to
-       // marker.setIcon(blueIcon);
-  }
-}
-
- */
-
 async function gameQuestion() {
     const questionData = await getData('http://127.0.0.1:3000/questions/');
-        document.getElementById('question'). innerHTML = questionData.question;
-        document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
-
-
+    document.getElementById('question'). innerHTML = questionData.question;
+    coranswer = questionData.correct_answer;
 }
 
 function correct_check(correct_answer) {
@@ -164,9 +145,9 @@ function correct_check(correct_answer) {
       if (x.value === correct_answer) {
         alert('Oikein! Saat leiman.');
         leimat++
-        updateStatus()
+        updateStatus();
       } else {
-        alert('Väärin, mene seruaavaan maahan ja vastaa kysymykseen!')
+        alert('Väärin! Mene seuraavaan maahan ja vastaa uuteen kysymykseen.')
         document.querySelector('#kysymysbox').classList.add('hide');
       }
     }
@@ -175,8 +156,7 @@ function correct_check(correct_answer) {
 
 document.getElementById('submit').addEventListener('click', async function (event) {
   event.preventDefault()
-  const questionData = await getData('http://127.0.0.1:3000/questions/');
-  correct_check(questionData.correct_answer);
+  correct_check(coranswer);
 });
 
 // turkki
@@ -204,5 +184,7 @@ getTurkki();
 
          */
 
+helsinkiVantaa();
+updateStatus();
 gameQuestion();
 correct_check();
