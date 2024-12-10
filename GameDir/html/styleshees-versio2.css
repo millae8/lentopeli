@@ -80,7 +80,7 @@ main {
 }
 
 
-/*
+
 #player-modal {
   width: 100vw;
   height: 100vh;
@@ -105,7 +105,7 @@ main {
   background-color: grey;
 }
 
- */
+/*-------------------------------------*/
 @media screen and (min-width: 769px) {
   .box {
     font-size: initial;

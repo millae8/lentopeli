@@ -39,11 +39,12 @@ const greenIcon = L.divIcon({ className: 'green-icon '});
 document.querySelector('#player-form').addEventListener('submit', function (event){
   event.preventDefault();
   const playerName = document.querySelector('#player-input').value;
+  document.querySelector('#player-modal').classList.add('hide');
   console.log(playerName);
   document.querySelector('#ohjeet').classList.add('hide');
   document.querySelector('#kysymysbox').classList.remove('hide');
-  //document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
-  //mainGame(`${playerName}&loc=${startLocation}`);
+  //document.querySelector('#player-model').classList.add('hide'); // if peli dont generate maat open this and take the one above away, but it should work
+    // toisaalta nyt oihjeet ei näy hyvin ja peli alkaa heti kysymyksistä
   mainGame(startingMarker, startLocation);
 
 });
