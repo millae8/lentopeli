@@ -20,7 +20,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
  */
 
 const apiUrl = 'http://127.0.0.1:3000/';
-const startLocation = 'EFHK';
+const startLocation = 'Helsinki-Vantaa';
 const startingMarker = [60.3172, 24.9633];
 const airportMarkers = L.featureGroup().addTo(map);
 let leimat = 0;
@@ -119,12 +119,12 @@ async function mainGame(location, name) {
             marker.bindPopup(popupContent);
 
             goButton.addEventListener('click', () => {
+                // budget update
                 co2_budget -= 500;
-                updateStatus(leimat);
+                updateStatus(co2_budget);
                 map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
-                co2_budget;
 
-                marker.bindPopup(`You are here: <b>${airport.countryName} , ${airport.airportName}</b>`)
+                marker.bindPopup(`You are here: <b>${airport.countryName}, ${airport.airportName}</b>`)
                     .openPopup();
                 document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
                 mainGame([airport.latitude_deg, airport.longitude_deg], airport.airportName);

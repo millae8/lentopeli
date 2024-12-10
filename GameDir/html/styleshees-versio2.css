@@ -24,6 +24,23 @@
   width: 100%;
   position: relative;
 }
+
+
+.page-header,
+.page-footer {
+  background-color: #157905;
+  color: whitesmoke;
+  padding: 1rem;
+}
+
+.page-footer {
+  text-align: center;
+}
+
+.page-title {
+  margin: 0;
+  text-align: center;
+}
 main {
   padding: 1rem 2rem;
 }
