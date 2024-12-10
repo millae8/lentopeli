@@ -128,7 +128,7 @@ async function mainGame(){
 async function gameQuestion() {
     const questionData = await getData('http://127.0.0.1:3000/questions/');
         document.getElementById('question'). innerHTML = questionData.question;
-       // document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
+        document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
 }
 
 
@@ -150,6 +150,22 @@ document.getElementById('submit').addEventListener('click', async function (even
   correct_check(questionData.correct_answer);
 });
 
+// turkki
+async function getTurkki(){
+    try {
+        const turkkiData = await getData('http://127.0.0.1:3000/turkki/');
+        console.log(turkkiData);
+/// until here works
+        const {latitude_deg, longitude_deg} = turkkiData
+        const countryMarker = L.marker([latitude_deg, longitude_deg]).addTo(map);
+        countryMarker.bindPopup(`you are here ${countryName}`).openPopup();
+        map.setView([latitude_deg, longitude_deg], 6);
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+getTurkki();
 
 //helsinkiVantaa();
 //gameQuestion();
