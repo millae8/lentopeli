@@ -5,7 +5,8 @@ from flask_cors import CORS
 import random
 import geopy
 
-# ??????????????????????????
+
+
 
 conn = mysql.connector.connect(
     host='localhost',
@@ -30,17 +31,7 @@ def helsinkivantaa():
     result = cursor.fetchall()
     return json.dumps(result)
 
-'''
-@app.route('/flyto')
-def flyto():
-    args = request.args
-    id = args.get("game")
-    dest = args.get("dest")
-    consumption = args.get("consumption")
-    json_data = fly(id, dest, consumption)
-    print("*** Called flyto endpoint ***")
-    return json_data
-'''
+
 
 @app.route('/airports/')
 def get_airport():
@@ -63,6 +54,34 @@ def get_question():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchone()
+    return json.dumps(result)
+
+@app.route('/maa/<icao>')
+def haemaa(icao):
+    # Define the SQL query with a placeholder for the ICAO parameter
+    sql = """
+        SELECT 
+            country.name AS countryName, 
+            airport.iso_country, 
+            airport.ident, 
+            airport.name AS airportName, 
+            airport.latitude_deg, 
+            airport.longitude_deg
+        FROM 
+            country
+        LEFT JOIN 
+            airport
+        ON 
+            airport.iso_country = country.iso_country 
+        WHERE 
+            airport.ident = %s
+    """
+    # Connect to the database and execute the query with the ICAO parameter
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(sql, (icao,))  # Pass the ICAO code as a parameter to the query
+    result = cursor.fetchall()
+
+    # Return the result as a JSON response
     return json.dumps(result)
 
 @app.route('/turkki/')
@@ -102,7 +121,6 @@ def get_airport3():
     return json.dumps(result)
 
 
-
 @app.route('/yhdysvallat/')
 def get_airport4():
     sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
@@ -114,7 +132,6 @@ def get_airport4():
     cursor.execute(sql)
     result = cursor.fetchall()
     return json.dumps(result)
-
 
 
 @app.route('/canada/')
@@ -129,16 +146,6 @@ def get_airport5():
     result = cursor.fetchall()
     return json.dumps(result)
 
-
-'''
-@app.route('/newgame')
-def newgame():
-    args = request.args
-    player = args.get('player')
-    destination = args.get('location')
-    json_data = fly(0, destination, 9000, player)
-    return json_data
-'''
 
 if __name__ == '__main__':
     app.run(use_reloader=True, host='127.0.0.1', port=3000)

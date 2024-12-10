@@ -43,17 +43,15 @@ document.querySelector('#player-form').addEventListener('submit', function (even
   document.querySelector('#kysymysbox').classList.remove('hide');
   //document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
   //mainGame(`${playerName}&loc=${startLocation}`);
-  mainGame(startingMarker);
+  mainGame(startingMarker, startLocation);
 
 });
-
 
 // game status update
 function uppdateStatus() {
   document.querySelector('#co2_budget').innerHTML = co2_budget;
   document.querySelector('#leimat').innerHTML = leimat;
 }
-
 
 
 /* check if game is over
@@ -85,44 +83,54 @@ function helsinkiVantaa(){
 helsinkiVantaa();
 uppdateStatus();
 
-async function mainGame(location) {
+async function mainGame(location, name) {
     try {
         const gameData = await getData('http://127.0.0.1:3000/airports/');
         console.log(gameData);
+        console.log(location);
+        airportMarkers.clearLayers();
+
+        // lisää tämänhetkien lokaatio
+         const marker = L.marker(location).addTo(map);
+            airportMarkers.addLayer(marker);
+                 marker.setIcon(greenIcon);
+                map.flyTo(location, 8);
+                marker.bindPopup(`You are here: <b>${name}</b>`);
+                marker.openPopup();
+                document.querySelector('#country').innerHTML = `Kysymys at ${name}`;
 
         for (const airport of gameData) {
+            // lisätään muut kolme
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map);
-            if (helsinkiVantaa) {
-                map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
-                marker.bindPopup(`You are here: <b>${airport.countryName} , ${airport.airportName}</b>`);
-                marker.openPopup();
-                document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
+            airportMarkers.addLayer(marker);
+            marker.setIcon(blueIcon);
+            const popupContent = document.createElement('div');
+            const h4 = document.createElement('h4');
+            h4.innerHTML = airport.airportName;
+            popupContent.append(h4);
+            // button
+            const goButton = document.createElement('button');
+            goButton.classList.add('button');
+            goButton.innerHTML = 'Go here';
 
-            } else {
-                marker.setIcon(blueIcon);
-                const popupContent = document.createElement('div');
-                const h4 = document.createElement('h4');
-                h4.innerHTML = airport.airportName;
-                popupContent.append(h4);
-                // button
-                const goButton = document.createElement('button');
-                goButton.classList.add('button');
-                goButton.innerHTML = 'Go here';
-                goButton.addEventListener('click', () => {
-                    map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
-                    marker.bindPopup (`You are here: <b>${airport.countryName} , ${airport.airportName}</b>`)
-                        .openPopup();
-                        document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
+            console.log(goButton);
+
+            popupContent.appendChild(goButton);
+            marker.bindPopup(popupContent);
+
+            goButton.addEventListener('click', () => {
+                map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
+                marker.bindPopup(`You are here: <b>${airport.countryName} , ${airport.airportName}</b>`)
+                    .openPopup();
+                document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
+                mainGame([airport.latitude_deg, airport.longitude_deg], airport.airportName);
                 });
-                popupContent.appendChild(goButton);
-                marker.bindPopup(popupContent);
-                marker.bindPopup(popupContent);
             }
-        }
-    } catch (error) {
+        } catch (error) {
         console.log(error);
     }
     gameQuestion();
+    // kysymysboksi näkyviin
 }
 
 /*
@@ -146,6 +154,7 @@ async function gameQuestion() {
         document.getElementById('question'). innerHTML = questionData.question;
         document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
 
+
 }
 
 function correct_check(correct_answer) {
@@ -153,9 +162,10 @@ function correct_check(correct_answer) {
     if (x.checked) {
       if (x.value === correct_answer) {
         alert('Oikein!');
-        // status.leimat += 1 ?
+
+        uppdateStatus()
       } else {
-        alert('Väärin :(')
+        alert('Väärin, mene seruaavaan maahan ja vastaa kysymykseen!')
         document.querySelector('#kysymysbox').classList.add('hide');
       }
     }
@@ -194,3 +204,4 @@ getTurkki();
          */
 
 gameQuestion();
+correct_check();
