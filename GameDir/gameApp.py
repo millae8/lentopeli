@@ -22,13 +22,25 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/helsinkivantaa/')
+@app.route('/helsinkivantaa/') # ei toimi
 def helsinkivantaa():
     sql = f'''select airport.name from airport where ident = 'EFHK';'''
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
     return json.dumps(result)
+
+'''
+@app.route('/flyto')
+def flyto():
+    args = request.args
+    id = args.get("game")
+    dest = args.get("dest")
+    consumption = args.get("consumption")
+    json_data = fly(id, dest, consumption)
+    print("*** Called flyto endpoint ***")
+    return json_data
+'''
 
 @app.route('/airports/')
 def get_airport():
@@ -63,7 +75,7 @@ def get_airport1():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
-    return result
+    return json.dumps(result)
 
 
 def get_airport2():
@@ -75,7 +87,7 @@ def get_airport2():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
-    return result
+    return json.dumps(result)
 
 @app.route('/japan/')
 def get_airport3():
@@ -87,7 +99,7 @@ def get_airport3():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
-    return result
+    return json.dumps(result)
 
 
 
@@ -101,7 +113,7 @@ def get_airport4():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
-    return result
+    return json.dumps(result)
 
 
 
@@ -115,7 +127,7 @@ def get_airport5():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
-    return result
+    return json.dumps(result)
 
 
 '''

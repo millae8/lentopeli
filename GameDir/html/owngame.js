@@ -8,6 +8,7 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
   maxZoom: 20,
   subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
 }).addTo(map);
+
 map.setView([60, 24], 7);
 
 /*
@@ -21,6 +22,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const apiUrl = 'http://127.0.0.1:3000/';
 const startLocation = 'EFHK';
 const airportMarkers = L.featureGroup().addTo(map);
+const leimat = 0;
+const co2_budget = 9000;
+
 
 // icons kartan kohdissa
 const blueIcon = L.divIcon({ className: 'blue-icon' });
@@ -42,9 +46,9 @@ document.querySelector('#player-form').addEventListener('submit', function (even
 
 
 // game status update
-function uppdateStatus(status) {
-  document.querySelector('#buget').innerHTML = status.co2.budget;
-  document.querySelector('#leimat').innerHTML = status.leimat;
+function uppdateStatus() {
+  document.querySelector('#co2_budget').innerHTML = co2_budget;
+  document.querySelector('#leimat').innerHTML = leimat;
 }
 
 
@@ -65,14 +69,17 @@ async function getData(url) {
 // tää function ei toimi :((((
 function helsinkiVantaa(){
   const startingMarker = [60.3172, 24.9633];
+  map.flyTo(startingMarker, 8);
   const mark = L.marker(startingMarker)
       .addTo(map)
-      .bindPopup(`Starting point: ${location.name}`)
+      .bindPopup(`Starting point`)
       .setIcon(greenIcon);
   airportMarkers.addLayer(mark);
+  console.log('im here');
 
 }
-
+helsinkiVantaa();
+uppdateStatus();
 
 async function mainGame() {
     try {
@@ -137,6 +144,7 @@ function correct_check(correct_answer) {
     if (x.checked) {
       if (x.value === correct_answer) {
         alert('Oikein!');
+        // status.leimat += 1 ?
       } else {
         alert('Väärin :(')
       }
@@ -155,7 +163,13 @@ async function getTurkki(){
     try {
         const turkkiData = await getData('http://127.0.0.1:3000/turkki/');
         console.log(turkkiData);
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 /// until here works
+        /*
         const {latitude_deg, longitude_deg} = turkkiData
         const countryMarker = L.marker([latitude_deg, longitude_deg]).addTo(map);
         countryMarker.bindPopup(`you are here ${countryName}`).openPopup();
@@ -166,6 +180,8 @@ async function getTurkki(){
 }
 
 getTurkki();
+
+*/
 
 //helsinkiVantaa();
 //gameQuestion();
