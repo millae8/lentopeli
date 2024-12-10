@@ -23,7 +23,7 @@ const apiUrl = 'http://127.0.0.1:3000/';
 const startLocation = 'EFHK';
 const startingMarker = [60.3172, 24.9633];
 const airportMarkers = L.featureGroup().addTo(map);
-const leimat = 0;
+let leimat = 0;
 const co2_budget = 9000;
 
 
@@ -48,7 +48,7 @@ document.querySelector('#player-form').addEventListener('submit', function (even
 });
 
 // game status update
-function uppdateStatus() {
+function updateStatus() {
   document.querySelector('#co2_budget').innerHTML = co2_budget;
   document.querySelector('#leimat').innerHTML = leimat;
 }
@@ -81,7 +81,7 @@ function helsinkiVantaa(){
 
 }
 helsinkiVantaa();
-uppdateStatus();
+updateStatus();
 
 async function mainGame(location, name) {
     try {
@@ -124,6 +124,7 @@ async function mainGame(location, name) {
                     .openPopup();
                 document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
                 mainGame([airport.latitude_deg, airport.longitude_deg], airport.airportName);
+                document.querySelector('#kysymysbox').classList.remove('hide');
                 });
             }
         } catch (error) {
@@ -161,9 +162,9 @@ function correct_check(correct_answer) {
   for (let x of document.getElementsByName('options')) {
     if (x.checked) {
       if (x.value === correct_answer) {
-        alert('Oikein!');
-
-        uppdateStatus()
+        alert('Oikein! Saat leiman.');
+        leimat++
+        updateStatus()
       } else {
         alert('Väärin, mene seruaavaan maahan ja vastaa kysymykseen!')
         document.querySelector('#kysymysbox').classList.add('hide');
