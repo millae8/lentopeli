@@ -21,6 +21,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const apiUrl = 'http://127.0.0.1:3000/';
 const startLocation = 'EFHK';
+const startingMarker = [60.3172, 24.9633];
 const airportMarkers = L.featureGroup().addTo(map);
 const leimat = 0;
 const co2_budget = 9000;
@@ -38,9 +39,11 @@ document.querySelector('#player-form').addEventListener('submit', function (even
   event.preventDefault();
   const playerName = document.querySelector('#player-input').value;
   console.log(playerName);
+  document.querySelector('#ohjeet').classList.add('hide');
+  document.querySelector('#kysymysbox').classList.remove('hide');
   //document.querySelector('#player-model').classList.add('hide'); // ei toimi for now
   //mainGame(`${playerName}&loc=${startLocation}`);
-  mainGame(playerName);
+  mainGame(startingMarker);
 
 });
 
@@ -66,22 +69,25 @@ async function getData(url) {
   return data;
 }
 
-// tää function ei toimi :((((
+// nyt toimi ((((:
 function helsinkiVantaa(){
-  const startingMarker = [60.3172, 24.9633];
   map.flyTo(startingMarker, 8);
   const mark = L.marker(startingMarker)
       .addTo(map)
       .bindPopup(`Starting point`)
+      .openPopup()
       .setIcon(greenIcon);
   airportMarkers.addLayer(mark);
   console.log('im here');
+  document.querySelector('#kysymysbox').classList.add('hide');
 
 }
 helsinkiVantaa();
 uppdateStatus();
 
-async function mainGame() {
+async function mainGame(location) {
+
+
     try {
         const gameData = await getData('http://127.0.0.1:3000/airports/');
         console.log(gameData);
@@ -89,10 +95,12 @@ async function mainGame() {
         for (const airport of gameData) {
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map); // untill tänne it works
             ////////// tästä eteenpäin toimi
-            if (airport) {
+            if (helsinkiVantaa) {
+                map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
                 marker.bindPopup(`You are here: ${airport.countryName} , ${airport.airportName}`);
                 marker.openPopup();
-               // marker.setIcon(blueIcon); tää ei toimiiiiiiiii
+                document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
+
             } else {
                 marker.setIcon(blueIcon);
                 const popupContent = document.createElement('div');
@@ -113,6 +121,7 @@ async function mainGame() {
     } catch (error) {
         console.log(error);
     }
+    gameQuestion();
 }
 
 /*
@@ -147,6 +156,7 @@ function correct_check(correct_answer) {
         // status.leimat += 1 ?
       } else {
         alert('Väärin :(')
+        document.querySelector('#kysymysbox').classList.add('hide');
       }
     }
   }
@@ -184,4 +194,4 @@ getTurkki();
 */
 
 //helsinkiVantaa();
-//gameQuestion();
+gameQuestion();
