@@ -86,38 +86,39 @@ helsinkiVantaa();
 uppdateStatus();
 
 async function mainGame(location) {
-
-
     try {
         const gameData = await getData('http://127.0.0.1:3000/airports/');
         console.log(gameData);
 
         for (const airport of gameData) {
-            const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map); // untill tänne it works
-            ////////// tästä eteenpäin toimi
+            const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(map);
             if (helsinkiVantaa) {
                 map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
-                marker.bindPopup(`You are here: ${airport.countryName} , ${airport.airportName}`);
+                marker.bindPopup(`You are here: <b>${airport.countryName} , ${airport.airportName}</b>`);
                 marker.openPopup();
                 document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
 
             } else {
                 marker.setIcon(blueIcon);
                 const popupContent = document.createElement('div');
-                const box = document.createElement('box');
-                box.innerHTML = airport.airportName;
-                popupContent.append(box);
+                const h4 = document.createElement('h4');
+                h4.innerHTML = airport.airportName;
+                popupContent.append(h4);
+                // button
                 const goButton = document.createElement('button');
-                goButton.classList('button');
+                goButton.classList.add('button');
                 goButton.innerHTML = 'Go here';
-                popupContent.append(goButton);
-                const p = document.createElement('p');
-                p.innerHTML = `Distance x km`;
-                popupContent.append(p);
+                goButton.addEventListener('click', () => {
+                    map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
+                    marker.bindPopup (`You are here: <b>${airport.countryName} , ${airport.airportName}</b>`)
+                        .openPopup();
+                        document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
+                });
+                popupContent.appendChild(goButton);
+                marker.bindPopup(popupContent);
                 marker.bindPopup(popupContent);
             }
         }
-
     } catch (error) {
         console.log(error);
     }
@@ -140,13 +141,12 @@ async function mainGame(){
 
  */
 
-
 async function gameQuestion() {
     const questionData = await getData('http://127.0.0.1:3000/questions/');
         document.getElementById('question'). innerHTML = questionData.question;
         document.getElementById('correct_answer').innerHTML = questionData.correct_answer;
-}
 
+}
 
 function correct_check(correct_answer) {
   for (let x of document.getElementsByName('options')) {
@@ -191,7 +191,6 @@ async function getTurkki(){
 
 getTurkki();
 
-*/
+         */
 
-//helsinkiVantaa();
 gameQuestion();
