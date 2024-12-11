@@ -97,54 +97,10 @@ def get_airport1():
     return json.dumps(result)
 
 
-def get_airport2():
-    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
-        FROM country
-        LEFT join airport
-        ON airport.iso_country = country.iso_country 
-        WHERE airport.ident = 'OAKB'"""
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    return json.dumps(result)
-
-@app.route('/japan/')
-def get_airport3():
-    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
-        FROM country
-        LEFT join airport
-        ON airport.iso_country = country.iso_country 
-        WHERE airport.ident = 'RJAA'"""
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    return json.dumps(result)
 
 
-@app.route('/yhdysvallat/')
-def get_airport4():
-    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
-        FROM country
-        LEFT join airport
-        ON airport.iso_country = country.iso_country 
-        WHERE airport.ident = 'KBFI'"""
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    return json.dumps(result)
 
 
-@app.route('/canada/')
-def get_airport5():
-    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
-        FROM country
-        LEFT join airport
-        ON airport.iso_country = country.iso_country 
-        WHERE airport.ident = 'CYVR'"""
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    return json.dumps(result)
 
 
 if __name__ == '__main__':
