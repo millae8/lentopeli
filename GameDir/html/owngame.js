@@ -149,6 +149,38 @@ function correct_check(correct_answer) {
   for (let x of document.getElementsByName('options')) {
     if (x.checked) {
       if (x.value === correct_answer) {
+        // SweetAlert 2 for correct answer
+        Swal.fire({
+          icon: 'success',
+          title: 'Oikein!',
+          text: 'Saat leiman.',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          document.querySelector('#kysymysbox').classList.add('hide');
+          leimat++;
+          updateStatus();
+        });
+      } else {
+        // SweetAlert 2 for incorrect answer
+        Swal.fire({
+          icon: 'error',
+          title: 'Väärin!',
+          text: 'Mene seuraavaan maahan ja vastaa uuteen kysymykseen.',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          document.querySelector('#kysymysbox').classList.add('hide');
+        });
+      }
+    }
+  }
+}
+
+
+/*
+function correct_check(correct_answer) {
+  for (let x of document.getElementsByName('options')) {
+    if (x.checked) {
+      if (x.value === correct_answer) {
         alert('Oikein! Saat leiman.');
         document.querySelector('#kysymysbox').classList.add('hide');
         leimat++
@@ -160,6 +192,8 @@ function correct_check(correct_answer) {
     }
   }
 }
+
+ */
 
 document.getElementById('submit').addEventListener('click', async function (event) {
   event.preventDefault()
