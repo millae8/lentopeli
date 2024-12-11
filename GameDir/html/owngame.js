@@ -97,7 +97,7 @@ function checkBudget(co2_budget) {
     Swal.fire({
       icon: 'error',
       title: 'Game Over!',
-      text: 'Budjettisis on loppu, hävisit pelin!',
+      text: 'Budjettisi on loppu, hävisit pelin!',
       showCancelButton: true,
       confirmButtonText: 'Restart',
       cancelButtonText: 'Close',
