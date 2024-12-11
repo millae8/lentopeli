@@ -24,7 +24,7 @@ const startLocation = 'Helsinki-Vantaa';
 const startingMarker = [60.3172, 24.9633];
 const airportMarkers = L.featureGroup().addTo(map);
 let leimat = 0;
-let co2_budget = 900;
+let co2_budget = 3500;
 let coranswer;
 
 
