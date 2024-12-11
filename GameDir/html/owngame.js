@@ -24,7 +24,7 @@ const startLocation = 'Helsinki-Vantaa';
 const startingMarker = [60.3172, 24.9633];
 const airportMarkers = L.featureGroup().addTo(map);
 let leimat = 0;
-let co2_budget = 9000;
+let co2_budget = 900;
 let coranswer;
 
 
@@ -68,6 +68,36 @@ async function getData(url) {
   const data = await response.json();
   return data;
 }
+
+function checkLeimat(){
+
+}
+
+
+function checkBudget(co2_budget) {
+  if (co2_budget <= 0) {
+    // SweetAlert 2 for game over
+    Swal.fire({
+      icon: 'error',
+      title: 'Game Over!',
+      text: 'Budjettisis on loppu, hävisit pelin!',
+      showCancelButton: true,
+      confirmButtonText: 'Restart',
+      cancelButtonText: 'Close',
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Restart the game
+        location.reload(); // Restarts the game by reloading the page
+      } else {
+        console.log('Game over, but the player chose not to restart.');
+      }
+    });
+  }
+}
+
+
+
 
 // nyt toimi ((((:
 function helsinkiVantaa(){
@@ -123,6 +153,8 @@ async function mainGame(location, name) {
                 // budget update
                 co2_budget -= 500;
                 updateStatus(co2_budget);
+                // check if there is no
+                checkBudget(co2_budget);
                 map.flyTo([airport.latitude_deg, airport.longitude_deg], 8);
 
                 marker.bindPopup(`You are here: <b>${airport.countryName}, ${airport.airportName}</b>`)
