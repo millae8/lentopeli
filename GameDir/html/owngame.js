@@ -55,13 +55,6 @@ function updateStatus() {
   document.querySelector('#leimat').innerHTML = leimat;
 }
 
-
-/* check if game is over
-function checkGameStatus(budget) {
-  if budget
-}
-*/
-
 // function to fetch data from API
 async function getData(url) {
   const response = await fetch(url);
@@ -69,10 +62,34 @@ async function getData(url) {
   return data;
 }
 
-function checkLeimat(){
+/* function checkLeimat(leimat){
+  if (leimat === 5) {
+    alert('olet kerännyt 5 leimaa')
+    console.log(leimat + 'fuck')
+  }
+} */
 
+function checkLeimat() {
+  if (leimat === 5) {
+    // SweetAlert 2 for game over
+    Swal.fire({
+      icon: 'success',
+      title: 'Victory!',
+      text: 'Olet kerännyt 5 leimaa!',
+      showCancelButton: true,
+      confirmButtonText: 'Restart',
+      cancelButtonText: 'Close',
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Restart the game
+        location.reload(); // Restarts the game by reloading the page
+      } else {
+        console.log('Victory, but the player chose not to restart.');
+      }
+    });
+  }
 }
-
 
 function checkBudget(co2_budget) {
   if (co2_budget <= 0) {
@@ -95,9 +112,6 @@ function checkBudget(co2_budget) {
     });
   }
 }
-
-
-
 
 // nyt toimi ((((:
 function helsinkiVantaa(){
@@ -191,6 +205,7 @@ function correct_check(correct_answer) {
           document.querySelector('#kysymysbox').classList.add('hide');
           leimat++;
           updateStatus();
+          checkLeimat();
         });
       } else {
         // SweetAlert 2 for incorrect answer
