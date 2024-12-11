@@ -62,13 +62,6 @@ async function getData(url) {
   return data;
 }
 
-/* function checkLeimat(leimat){
-  if (leimat === 5) {
-    alert('olet kerännyt 5 leimaa')
-    console.log(leimat + 'fuck')
-  }
-} */
-
 function checkLeimat() {
   if (leimat === 5) {
     // SweetAlert 2 for game over
@@ -124,7 +117,6 @@ function helsinkiVantaa(){
   airportMarkers.addLayer(mark);
   console.log('im here');
   document.querySelector('#kysymysbox').classList.add('hide');
-
 }
 
 async function mainGame(location, name) {
@@ -222,7 +214,6 @@ function correct_check(correct_answer) {
   }
 }
 
-
 /*
 function correct_check(correct_answer) {
   for (let x of document.getElementsByName('options')) {
@@ -239,7 +230,6 @@ function correct_check(correct_answer) {
     }
   }
 }
-
  */
 
 document.getElementById('submit').addEventListener('click', async function (event) {
@@ -255,7 +245,6 @@ async function getTurkki(){
     } catch (error) {
         console.log(error);
     }
-
 }
 /// until here works
         /*
@@ -274,5 +263,4 @@ getTurkki();
 
 helsinkiVantaa();
 updateStatus();
-gameQuestion();
 correct_check();
