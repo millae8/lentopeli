@@ -135,7 +135,7 @@ async function mainGame(location, name) {
                 map.flyTo(location, 8);
                 marker.bindPopup(`You are here: <b>${name}</b>`);
                 marker.openPopup();
-                document.querySelector('#country').innerHTML = `Kysymys at ${name}`;
+                document.querySelector('#country').innerHTML = `${name} kysymys`;
 
         for (const airport of gameData) {
             // lisätään muut kolme
@@ -168,7 +168,7 @@ async function mainGame(location, name) {
 
                 marker.bindPopup(`You are here: <b>${airport.countryName}, ${airport.airportName}</b>`)
                     .openPopup();
-                document.querySelector('#country').innerHTML = `Kysymys at ${airport.countryName}`;
+                document.querySelector('#country').innerHTML = `${airport.countryName} kysymys`;
                 mainGame([airport.latitude_deg, airport.longitude_deg], airport.airportName);
 
                 });

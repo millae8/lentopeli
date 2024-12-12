@@ -30,7 +30,7 @@
 .page-footer {
   background-color: #157905;
   color: whitesmoke;
-  padding: 1rem;
+  padding: 2rem;
 }
 
 .page-footer {
@@ -140,4 +140,9 @@ main {
   border-radius: 60%;
   border: 5px solid;
 }
+
+#kysymysbox {
+  height: 40%;
+}
+
 

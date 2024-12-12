@@ -23,7 +23,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/helsinkivantaa/') # ei toimi
+@app.route('/helsinkivantaa/')
 def helsinkivantaa():
     sql = f'''select airport.name from airport where ident = 'EFHK';'''
     cursor = conn.cursor(dictionary=True)
@@ -82,18 +82,6 @@ def haemaa(icao):
     result = cursor.fetchall()
 
     # Return the result as a JSON response
-    return json.dumps(result)
-
-@app.route('/turkki/')
-def get_airport1():
-    sql = """SELECT country.name as countryName, airport.iso_country, airport.ident, airport.name as airportName, airport.latitude_deg, airport.longitude_deg
-        FROM country
-        LEFT join airport
-        ON airport.iso_country = country.iso_country 
-        WHERE airport.ident = 'LTAC'"""
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql)
-    result = cursor.fetchall()
     return json.dumps(result)
 
 
