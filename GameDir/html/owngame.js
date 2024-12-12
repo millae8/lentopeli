@@ -35,6 +35,7 @@ document.querySelector('#player-form').addEventListener('submit', function (even
   console.log(playerName);
   //document.querySelector('#ohjeet').classList.add('hide');
   document.querySelector('#kysymysbox').classList.remove('hide');
+  document.getElementById('greenland').classList.add('hide');
   mainGame(startingMarker, startLocation);
 
 });
@@ -64,15 +65,16 @@ function checkLeimat() {
     // SweetAlert 2 for game over
     Swal.fire({
       icon: 'success',
-      title: 'You win!',
+      title: 'Mahtavaa!',
       text: 'Olet kerännyt 5 leimaa!',
-      showCancelButton: true,
+      //showCancelButton: true,
       confirmButtonText: 'Go to Greenland',
-      cancelButtonText: 'Close',
+      //cancelButtonText: 'Close',
       allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
           getGreenland();
+          document.getElementById('greenland').classList.remove('hide');
         // Restart the game
         //location.reload(); // Restarts the game by reloading the page
       }
