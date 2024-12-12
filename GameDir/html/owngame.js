@@ -64,10 +64,10 @@ function checkLeimat() {
     // SweetAlert 2 for game over
     Swal.fire({
       icon: 'success',
-      title: 'Victory!',
+      title: 'You win!',
       text: 'Olet kerännyt 5 leimaa!',
       showCancelButton: true,
-      confirmButtonText: 'Go to greenland',
+      confirmButtonText: 'Go to Greenland',
       cancelButtonText: 'Close',
       allowOutsideClick: false
     }).then((result) => {
