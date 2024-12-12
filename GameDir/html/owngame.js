@@ -35,7 +35,6 @@ document.querySelector('#player-form').addEventListener('submit', function (even
   console.log(playerName);
   //document.querySelector('#ohjeet').classList.add('hide');
   document.querySelector('#kysymysbox').classList.remove('hide');
-  document.getElementById('greenland').classList.add('hide');
   mainGame(startingMarker, startLocation);
 
 });
@@ -120,6 +119,7 @@ function helsinkiVantaa(){
   airportMarkers.addLayer(mark);
   console.log('im here');
   document.querySelector('#kysymysbox').classList.add('hide');
+  document.getElementById('greenland').classList.add('hide');
 
 }
 
